@@ -51,8 +51,8 @@ export function SiteFooter() {
                 </Link>
               </li>
               <li>
-                <a href="https://github.com/skillrune" className="text-[var(--olive)] hover:text-[var(--brand)] transition-colors" target="_blank" rel="noopener noreferrer">
-                  GitHub Organization
+                <a href="https://github.com/404priyanshu/skillrune" className="text-[var(--olive)] hover:text-[var(--brand)] transition-colors" target="_blank" rel="noopener noreferrer">
+                  GitHub Repository
                 </a>
               </li>
             </ul>

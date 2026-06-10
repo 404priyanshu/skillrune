@@ -37,7 +37,7 @@ export function SiteHeader() {
         </nav>
         <div className="flex items-center gap-2">
           <Link
-            href="https://github.com/skillrune"
+            href="https://github.com/404priyanshu/skillrune"
             className="hidden h-9 w-9 items-center justify-center rounded-full border border-[var(--border)] text-[var(--olive)] transition-all duration-200 hover:bg-[var(--ivory)] hover:text-[var(--brand)] hover:shadow-sm sm:inline-flex"
             aria-label="SkillRune on GitHub"
           >
