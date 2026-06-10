@@ -27,37 +27,33 @@ export function SkillsBrowser({
   const filtered = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
     return skills
-      .filter((skill) => {
+      .map((skill) => ({
+        skill,
+        score: getSearchScore(skill, normalizedQuery),
+      }))
+      .filter(({ skill, score }) => {
         const matchesQuery =
-          normalizedQuery.length === 0 ||
-          [
-            skill.name,
-            skill.shortDescription,
-            skill.category,
-            skill.license,
-            skill.author,
-            ...skill.tags,
-            ...skill.supportedAgents,
-          ]
-            .join(" ")
-            .toLowerCase()
-            .includes(normalizedQuery);
+          normalizedQuery.length === 0 || score > 0;
         const matchesCategory = category === "All" || skill.category === category;
         const matchesTag = tag === "All" || skill.tags.includes(tag);
         return matchesQuery && matchesCategory && matchesTag;
       })
       .sort((a, b) => {
+        if (normalizedQuery) {
+          return b.score - a.score;
+        }
         if (sortMode === "newest") {
-          return Date.parse(b.lastUpdated) - Date.parse(a.lastUpdated);
+          return Date.parse(b.skill.lastUpdated) - Date.parse(a.skill.lastUpdated);
         }
         if (sortMode === "downloads") {
-          return b.downloads - a.downloads;
+          return b.skill.downloads - a.skill.downloads;
         }
         if (sortMode === "rating") {
-          return b.rating - a.rating;
+          return b.skill.rating - a.skill.rating;
         }
-        return Number(Boolean(b.featured)) - Number(Boolean(a.featured));
-      });
+        return Number(Boolean(b.skill.featured)) - Number(Boolean(a.skill.featured));
+      })
+      .map(({ skill }) => skill);
   }, [category, query, sortMode, tag]);
 
   function clearFilters() {
@@ -169,4 +165,24 @@ export function SkillsBrowser({
       )}
     </div>
   );
+}
+
+function getSearchScore(skill: (typeof skills)[number], query: string) {
+  if (!query) return 0;
+  let score = 0;
+  const name = skill.name.toLowerCase();
+  const category = skill.category.toLowerCase();
+  const description = skill.shortDescription.toLowerCase();
+  const tags = skill.tags.map((tag) => tag.toLowerCase());
+  const agents = skill.supportedAgents.map((agent) => agent.toLowerCase());
+
+  if (name === query) score += 100;
+  if (name.startsWith(query)) score += 60;
+  if (name.includes(query)) score += 40;
+  if (category.includes(query)) score += 25;
+  if (tags.some((tag) => tag === query)) score += 30;
+  if (tags.some((tag) => tag.includes(query))) score += 18;
+  if (agents.some((agent) => agent.includes(query))) score += 12;
+  if (description.includes(query)) score += 8;
+  return score;
 }

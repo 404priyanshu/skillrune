@@ -30,6 +30,10 @@ export function SiteFooter() {
               Submit
             </Link>
             <span className="mx-2">·</span>
+            <Link href="/docs/package-format" className="hover:text-[var(--brand)]">
+              Format
+            </Link>
+            <span className="mx-2">·</span>
             <Link href="/static-kami-index.html" className="hover:text-[var(--brand)]">
               Static preview
             </Link>

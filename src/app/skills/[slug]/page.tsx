@@ -155,6 +155,12 @@ export default async function SkillDetailPage({ params }: PageProps) {
               <a href={skill.docsUrl} className="inline-flex items-center gap-2">
                 Documentation URL <ExternalLink className="h-3.5 w-3.5" />
               </a>
+              <a
+                href={`/api/skills/${skill.slug}/manifest`}
+                className="inline-flex items-center gap-2"
+              >
+                JSON manifest <ExternalLink className="h-3.5 w-3.5" />
+              </a>
             </div>
           </div>
         </section>

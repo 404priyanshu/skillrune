@@ -5,6 +5,7 @@ import { RuneMark } from "@/components/RuneMark";
 const navItems = [
   { href: "/skills", label: "Skills" },
   { href: "/categories", label: "Categories" },
+  { href: "/docs/package-format", label: "Format" },
   { href: "/submit", label: "Submit" },
 ];
 

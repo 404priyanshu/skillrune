@@ -11,7 +11,11 @@ manifests, and submit future skills for review.
 - `/skills/[slug]` - skill metadata, files, README preview, safety notes, download UX
 - `/categories` - category browsing
 - `/submit` - client-side validated submission form
+- `/docs/package-format` - package manifest documentation
+- `/api/skills` - JSON manifest index
 - `/api/skills/[slug]/download` - generated Markdown skill manifest download
+- `/api/skills/[slug]/manifest` - JSON manifest for one skill
+- `/llms.txt` and `/llms-full.txt` - AI-readable product context
 - `/static-kami-index.html` - preserved static Kami landing-page reference
 
 ## Getting Started
@@ -39,6 +43,13 @@ npm run build
 
 ## MVP Notes
 
-The submit form validates locally and displays a success state. Real submission
-storage, accounts, payments, admin tooling, and a production CLI are intentionally
-out of scope for this version.
+The submit form validates locally and stores a browser-local review queue with
+pending, approved, and rejected states. Real DB storage, accounts, payments,
+admin auth, and a production CLI are intentionally out of scope for this version.
+
+## Release Checklist
+
+- Point `skillrune.com` at the deployed Vercel project.
+- Confirm `/sitemap.xml`, `/robots.txt`, `/manifest.webmanifest`, `/llms.txt`, and `/llms-full.txt`.
+- Smoke test `/skills`, one `/skills/[slug]`, `/submit`, `/api/skills`, and one manifest download.
+- Replace localStorage submission queue with DB-backed moderation before accepting public submissions.

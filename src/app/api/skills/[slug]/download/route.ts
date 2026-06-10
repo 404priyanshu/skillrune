@@ -1,3 +1,4 @@
+import { createSkillManifest, manifestToMarkdown } from "@/lib/skill-package";
 import { getSkill } from "@/lib/skills";
 
 export async function GET(
@@ -11,36 +12,7 @@ export async function GET(
     return new Response("Skill not found", { status: 404 });
   }
 
-  const body = [
-    `# ${skill.name}`,
-    "",
-    skill.shortDescription,
-    "",
-    "## Install",
-    "",
-    `\`\`\`sh`,
-    `skillrune install ${skill.slug}`,
-    `\`\`\``,
-    "",
-    "## Metadata",
-    "",
-    `- Category: ${skill.category}`,
-    `- Version: ${skill.version}`,
-    `- Author: ${skill.author}`,
-    `- License: ${skill.license}`,
-    `- Supported agents: ${skill.supportedAgents.join(", ")}`,
-    "",
-    "## Safety Notes",
-    "",
-    ...skill.safetyNotes.map((note) => `- ${note}`),
-    "",
-    "## Files",
-    "",
-    ...skill.files.map((file) => `- \`${file.path}\`: ${file.description}`),
-    "",
-  ].join("\n");
-
-  return new Response(body, {
+  return new Response(manifestToMarkdown(createSkillManifest(skill)), {
     headers: {
       "content-disposition": `attachment; filename="${skill.slug}.skill.md"`,
       "content-type": "text/markdown; charset=utf-8",
