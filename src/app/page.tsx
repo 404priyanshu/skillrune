@@ -2,309 +2,257 @@ import Link from "next/link";
 import {
   ArrowRight,
   BookOpen,
-  Boxes,
   Download,
+  FileJson,
   Search,
   ShieldCheck,
   Sparkles,
+  Award,
+  BookMarked,
+  Scroll,
 } from "lucide-react";
 import { RuneMark } from "@/components/RuneMark";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
-import { SkillCard } from "@/components/SkillCard";
+import { SkillsBrowser } from "@/app/skills/SkillsBrowser";
+import { HeroConsole } from "@/components/HeroConsole";
 import { categories, skills } from "@/lib/skills";
 
-const featuredSkills = skills.filter((skill) => skill.featured).slice(0, 4);
+const newestSkills = [...skills]
+  .sort((a, b) => Date.parse(b.lastUpdated) - Date.parse(a.lastUpdated))
+  .slice(0, 5);
+const popularSkills = [...skills].sort((a, b) => b.downloads - a.downloads).slice(0, 5);
 
-const workflow = [
+const quickStats = [
+  { label: "Equippable Runes", value: skills.length },
+  { label: "Study Categories", value: categories.length },
   {
-    title: "Discover useful agent skills",
-    description: "Browse by category, tag, support surface, rating, and download activity.",
+    label: "Total Equips",
+    value: `${Math.round(skills.reduce((sum, skill) => sum + skill.downloads, 0) / 1000)}k+`,
+  },
+];
+
+const registryNotes = [
+  {
+    icon: Scroll,
+    title: "Inspectable Manifests",
+    text: "Examine execution parameters and file boundaries before installing.",
   },
   {
-    title: "Inspect instructions and files",
-    description: "Read the README preview, file tree, compatibility details, and safety notes.",
+    icon: ShieldCheck,
+    title: "Safety Auditing",
+    text: "Clear warnings for network rules, write scopes, and potential risks.",
   },
   {
-    title: "Download or copy install instructions",
-    description: "Use the planned command shape: skillrune install <slug>.",
+    icon: Download,
+    title: "One-Click Equip",
+    text: "Equip your agent immediately via simple CLI manifest fetch.",
   },
-  {
-    title: "Equip your agent and start using it",
-    description: "Bring reusable workflows into coding, research, browser, and automation agents.",
-  },
+];
+
+const agents = [
+  { name: "Antigravity", file: "antigravity.svg" },
+  { name: "Claude Code", file: "claude-code.svg" },
+  { name: "Cursor", file: "cursor.svg" },
+  { name: "Gemini", file: "gemini.svg" },
+  { name: "GitHub Copilot", file: "copilot.svg" },
+  { name: "Cline", file: "cline.svg" },
+  { name: "Roo Code", file: "roo.svg" },
+  { name: "Windsurf", file: "windsurf.svg" },
+  { name: "Trae", file: "trae.svg" },
+  { name: "Zed", file: "zed.svg" },
+  { name: "VS Code", file: "vscode.svg" },
+  { name: "AMP", file: "amp.svg" },
+  { name: "ClawdBot", file: "clawdbot.svg" },
+  { name: "Droid", file: "droid.svg" },
+  { name: "Goose", file: "goose.svg" },
+  { name: "Kilo", file: "kilo.svg" },
+  { name: "Kiro CLI", file: "kiro-cli.svg" },
+  { name: "Nous Research", file: "nous-research.svg" },
+  { name: "OpenCode", file: "opencode.svg" },
 ];
 
 export default function Home() {
   return (
     <>
       <SiteHeader />
-      <main>
-        <section className="mx-auto max-w-6xl px-5 pb-16 pt-20 sm:px-8 lg:pb-24 lg:pt-28">
-          <div className="grid gap-12 lg:grid-cols-[1fr_460px] lg:items-center">
-            <div>
-              <div className="mb-6 flex flex-wrap items-center gap-3 font-ui text-xs uppercase tracking-[0.08em] text-[var(--stone)]">
-                <RuneMark className="h-8 w-8" />
-                <span>SkillRune · v0.1 registry concept</span>
+      <main className="bg-[var(--parchment)]">
+        {/* Hero Section */}
+        <section className="border-b border-[var(--border-soft)] relative overflow-hidden bg-radial from-[var(--ivory)] to-[var(--parchment)] py-12 lg:py-16">
+          <div className="mx-auto max-w-6xl px-5 sm:px-8">
+            <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+              {/* Left Column: Branding and Intro */}
+              <div className="space-y-6">
+                <div className="inline-flex items-center gap-2.5 rounded-full border border-[var(--border)] bg-[var(--ivory)] px-3.5 py-1.5 font-ui text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--stone)] shadow-sm">
+                  <RuneMark className="h-5 w-5" />
+                  <span>The Scholar's Agent Registry · Beta v0.1.0</span>
+                </div>
+                
+                {/* Large ASCII Art Logo */}
+                <div className="relative overflow-hidden select-none font-mono text-[8px] leading-[1.15] sm:text-[9px] md:text-[10px] text-[var(--brand)] max-w-full">
+                  <pre className="tracking-tight font-bold">
+{`███████  ██  ██  ██  ██       ██       ██████   ██    ██  ███   ██  ███████
+██       ██ ██   ██  ██       ██       ██   ██  ██    ██  ████  ██  ██     
+███████  ████    ██  ██       ██       ██████   ██    ██  ██ ██ ██  █████  
+     ██  ██ ██   ██  ██       ██       ██   ██  ██    ██  ██  ████  ██     
+███████  ██  ██  ██  ███████  ███████  ██   ██   ██████   ██   ███  ███████`}
+                  </pre>
+                </div>
+
+                <h1 className="font-serif text-3xl font-medium leading-tight text-[var(--near-black)] sm:text-4xl lg:text-5xl">
+                  Equip reusable capabilities on AI agents.
+                </h1>
+                
+                <p className="max-w-xl text-base leading-7 text-[var(--olive)] sm:text-lg">
+                  SkillRune is a ledger of certified instruction manifests and utility scripts. Equip your agents with advanced tools, safety checks, and workflow protocols.
+                </p>
+
+                <div className="flex flex-col gap-3 sm:flex-row pt-2">
+                  <Link
+                    href="/skills"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--brand)] px-6 py-3 font-serif text-sm font-medium text-[var(--ivory)] shadow transition-all duration-200 hover:bg-[var(--brand-light)] hover:shadow-md active:scale-95 cursor-pointer"
+                  >
+                    <Search className="h-4 w-4" />
+                    Inspect Runes
+                  </Link>
+                  <Link
+                    href="/submit"
+                    className="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--brand)] bg-[var(--ivory)] px-6 py-3 font-serif text-sm font-medium text-[var(--brand)] shadow-sm transition-all duration-200 hover:bg-[var(--brand-tint)] active:scale-95 cursor-pointer"
+                  >
+                    <Sparkles className="h-4 w-4" />
+                    Share a Rune
+                  </Link>
+                </div>
               </div>
-              <h1 className="max-w-4xl font-serif text-6xl font-medium leading-[1.03] tracking-normal text-[var(--near-black)] sm:text-7xl lg:text-8xl">
-                Reusable skills for AI agents.
-              </h1>
-              <p className="mt-6 max-w-2xl text-xl leading-8 text-[var(--olive)]">
-                Discover, inspect, and download agent skills that give models new
-                capabilities.
-              </p>
-              <div className="mt-7 flex flex-wrap gap-5 font-ui text-sm text-[var(--stone)]">
-                <span>
-                  <b className="font-medium text-[var(--dark-warm)]">12</b> seed skills
-                </span>
-                <span>
-                  <b className="font-medium text-[var(--dark-warm)]">11</b> categories
-                </span>
-                <span>
-                  <b className="font-medium text-[var(--dark-warm)]">1 command</b>{" "}
-                  install pattern
-                </span>
-              </div>
-              <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-                <Link
-                  href="/skills"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--brand)] px-7 py-3.5 font-serif text-base font-medium text-[var(--ivory)] transition hover:bg-[var(--brand-light)]"
-                >
-                  Browse Skills
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link
-                  href="/submit"
-                  className="inline-flex items-center justify-center rounded-full border border-[var(--brand)] px-7 py-3.5 font-serif text-base font-medium text-[var(--brand)] transition hover:bg-[var(--brand-tint)]"
-                >
-                  Submit a Skill
-                </Link>
+
+              {/* Right Column: Console and Quick Stats */}
+              <div className="flex flex-col items-center lg:items-end gap-8">
+                {/* Typing Console */}
+                <div className="w-full flex justify-center lg:justify-end">
+                  <HeroConsole />
+                </div>
+
+                {/* Quick Stats Banner */}
+                <div className="grid w-full grid-cols-3 gap-1 rounded-xl border border-[var(--border)] bg-[var(--ivory)] p-1.5 shadow-sm sm:max-w-[420px]">
+                  {quickStats.map((stat) => (
+                    <div key={stat.label} className="px-2 py-3 text-center border-r border-[var(--border-soft)] last:border-r-0">
+                      <div className="font-serif text-xl sm:text-2xl font-bold text-[var(--brand)]">
+                        {stat.value}
+                      </div>
+                      <div className="mt-1 font-ui text-[10px] uppercase font-bold tracking-wider text-[var(--stone)]">
+                        {stat.label}
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
+          </div>
+        </section>
 
-            <div className="screen-frame dark-panel rounded-xl border border-[#2e3545] p-5 text-[#faf9f5]">
-              <div className="flex items-center justify-between gap-4 font-ui text-xs text-[#c8c2ad]">
-                <span className="flex items-center gap-2 font-serif text-lg text-[#faf9f5]">
-                  <RuneMark className="h-7 w-7" />
-                  SkillRune
-                </span>
-                <span>Featured · Newest · Rated</span>
-              </div>
-              <div className="mt-5 rounded-lg border border-[#303746] bg-[#191d27] px-4 py-3 font-ui text-sm text-[#c8c2ad]">
-                Search skills, tags, agents, or workflows
-              </div>
-              <div className="mt-4 grid gap-3">
-                {featuredSkills.slice(0, 3).map((skill) => (
-                  <Link
-                    href={`/skills/${skill.slug}`}
-                    key={skill.slug}
-                    className="rounded-lg border border-[#303746] bg-[#181c25] p-4 transition hover:border-[#5a6b8a]"
-                  >
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <h2 className="font-serif text-lg font-medium leading-tight">
-                          {skill.name}
-                        </h2>
-                        <p className="mt-2 text-sm leading-6 text-[#c8c2ad]">
-                          {skill.shortDescription}
-                        </p>
-                      </div>
-                      <span className="rounded-full bg-[#202737] px-2.5 py-1 font-ui text-xs text-[#b7c5d7]">
-                        {skill.category}
-                      </span>
-                    </div>
-                  </Link>
+        {/* Scrolling Agents Marquee Section */}
+        <section className="py-6 border-b border-[var(--border-soft)] bg-[var(--ivory)]/40 overflow-hidden">
+          <div className="mx-auto max-w-6xl px-5 sm:px-8">
+            <h2 className="text-[10px] font-ui font-bold tracking-[0.15em] text-[var(--stone)] uppercase text-center mb-4">
+              Compatible with major agent frameworks
+            </h2>
+            <div className="relative w-full overflow-hidden flex">
+              {/* Fade overlays */}
+              <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[var(--parchment)] to-transparent z-10 pointer-events-none"></div>
+              <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[var(--parchment)] to-transparent z-10 pointer-events-none"></div>
+              
+              <div className="animate-carousel flex items-center gap-10">
+                {/* Set 1 */}
+                {agents.map((agent, i) => (
+                  <img
+                    key={`agent-a-${i}`}
+                    src={`/agents/${agent.file}`}
+                    alt={agent.name}
+                    title={agent.name}
+                    className="h-10 sm:h-12 lg:h-14 w-auto object-contain flex-shrink-0 filter grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100 cursor-pointer"
+                  />
+                ))}
+                {/* Set 2 (for seamless loop) */}
+                {agents.map((agent, i) => (
+                  <img
+                    key={`agent-b-${i}`}
+                    src={`/agents/${agent.file}`}
+                    alt={agent.name}
+                    title={agent.name}
+                    className="h-10 sm:h-12 lg:h-14 w-auto object-contain flex-shrink-0 filter grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100 cursor-pointer"
+                  />
                 ))}
               </div>
             </div>
           </div>
         </section>
 
-        <section className="border-y border-[var(--border-soft)]">
-          <div className="mx-auto grid max-w-6xl gap-8 px-5 py-14 sm:px-8 md:grid-cols-3">
+        {/* Leaderboard Section */}
+        <section className="mx-auto max-w-6xl px-5 py-12 sm:px-8">
+          <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="font-ui text-xs uppercase tracking-[0.08em] text-[var(--brand)]">
-                What is a skill?
+              <p className="font-ui text-xs font-bold uppercase tracking-[0.1em] text-[var(--brand-light)]">
+                Registry Leaderboard
               </p>
-              <h2 className="mt-3 font-serif text-3xl font-medium text-[var(--near-black)]">
-                A packaged instruction set for repeatable agent work.
-              </h2>
-            </div>
-            <p className="text-base leading-7 text-[var(--olive)] md:col-span-2">
-              A skill is a workflow, script, checklist, template, or capability
-              that teaches an AI agent how to perform a specific task reliably.
-              SkillRune makes those packages discoverable, inspectable, and easy
-              to equip.
-            </p>
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8">
-          <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="font-ui text-xs uppercase tracking-[0.08em] text-[var(--brand)]">
-                Featured skills
-              </p>
-              <h2 className="mt-3 font-serif text-4xl font-medium text-[var(--near-black)]">
-                Practical runes for the first catalog.
+              <h2 className="mt-2 font-serif text-3xl font-medium text-[var(--near-black)]">
+                Most active agent capabilities.
               </h2>
             </div>
             <Link
-              href="/skills"
-              className="inline-flex items-center gap-2 font-serif text-base font-medium text-[var(--brand)]"
+              href="/docs/package-format"
+              className="inline-flex items-center gap-1.5 self-start font-ui text-sm font-semibold text-[var(--brand)] hover:text-[var(--brand-light)] transition-colors"
             >
-              View all skills
+              Package Specifications
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
-          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {featuredSkills.map((skill) => (
-              <SkillCard key={skill.slug} skill={skill} />
-            ))}
-          </div>
+          <SkillsBrowser compact />
         </section>
 
-        <section className="mx-auto max-w-6xl px-5 py-12 sm:px-8">
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-            {[
-              {
-                icon: Search,
-                title: "Searchable registry",
-                text: "Find skills by name, category, tag, agent support, or workflow shape.",
-              },
-              {
-                icon: BookOpen,
-                title: "Inspectable packages",
-                text: "Read instructions, files, README previews, safety notes, and metadata.",
-              },
-              {
-                icon: Download,
-                title: "Download UX",
-                text: "Copy an install command or download a generated skill manifest.",
-              },
-              {
-                icon: ShieldCheck,
-                title: "Safety-forward listings",
-                text: "Make permissions, network use, file writes, and sharp edges visible.",
-              },
-            ].map((item) => (
-              <article
-                key={item.title}
-                className="rounded-lg border border-[var(--border)] bg-[var(--ivory)] p-5"
-              >
-                <item.icon className="h-5 w-5 text-[var(--brand)]" />
-                <h3 className="mt-4 font-serif text-xl font-medium text-[var(--near-black)]">
-                  {item.title}
-                </h3>
-                <p className="mt-3 text-sm leading-6 text-[var(--olive)]">{item.text}</p>
+        {/* Feature Highlights Grid */}
+        <section className="border-y border-[var(--border-soft)] bg-[var(--ivory)]/60 py-12">
+          <div className="mx-auto grid max-w-6xl gap-8 px-5 sm:px-8 lg:grid-cols-3">
+            {registryNotes.map((item) => (
+              <article key={item.title} className="flex gap-4 p-4 rounded-xl hover:bg-[var(--parchment)]/30 transition-all duration-200">
+                <span className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--parchment)] text-[var(--brand)] shadow-sm">
+                  <item.icon className="h-5 w-5" />
+                </span>
+                <div>
+                  <h3 className="font-serif text-lg font-bold text-[var(--near-black)]">
+                    {item.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-6 text-[var(--olive)]">{item.text}</p>
+                </div>
               </article>
             ))}
           </div>
         </section>
 
-        <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8">
-          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+        {/* Call to Action Banner */}
+        <section className="mx-auto max-w-6xl px-5 py-12 sm:px-8">
+          <div className="rounded-xl border border-[var(--line)] bg-[var(--ivory)] p-6 md:p-8 shadow-sm sm:flex sm:items-center sm:justify-between sm:gap-8 gold-illuminate">
             <div>
-              <p className="font-ui text-xs uppercase tracking-[0.08em] text-[var(--brand)]">
-                Categories
-              </p>
-              <h2 className="mt-3 font-serif text-4xl font-medium text-[var(--near-black)]">
-                Start with useful shelves.
+              <h2 className="font-serif text-2xl font-bold text-[var(--near-black)]">
+                Author a new agent rune?
               </h2>
-              <p className="mt-4 leading-7 text-[var(--olive)]">
-                The first taxonomy keeps browsing simple while the product grows
-                into fuller search and review workflows.
+              <p className="mt-2 text-sm leading-6 text-[var(--olive)]">
+                Create a structured manifest containing safety notes, files, and executable parameters to share.
               </p>
             </div>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {categories.slice(0, 8).map((category) => (
-                <Link
-                  key={category}
-                  href={`/skills?category=${encodeURIComponent(category)}`}
-                  className="group rounded-lg border border-[var(--border)] bg-[var(--ivory)] p-4 transition hover:border-[var(--line)]"
-                >
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="font-serif text-lg font-medium text-[var(--brand)]">
-                      {category}
-                    </span>
-                    <ArrowRight className="h-4 w-4 text-[var(--stone)] transition group-hover:translate-x-0.5 group-hover:text-[var(--brand)]" />
-                  </div>
-                  <p className="mt-2 font-ui text-xs text-[var(--stone)]">
-                    {skills.filter((skill) => skill.category === category).length} seed skills
-                  </p>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8">
-          <div className="rounded-xl border border-[var(--line)] bg-[var(--ivory)] p-6 sm:p-8">
-            <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
-              <div>
-                <p className="font-ui text-xs uppercase tracking-[0.08em] text-[var(--brand)]">
-                  How it works
-                </p>
-                <h2 className="mt-3 font-serif text-4xl font-medium text-[var(--near-black)]">
-                  From registry to equipped agent.
-                </h2>
-              </div>
-              <ol className="grid gap-4">
-                {workflow.map((step, index) => (
-                  <li
-                    key={step.title}
-                    className="grid grid-cols-[2.5rem_1fr] gap-4 border-b border-[var(--border-soft)] pb-4 last:border-b-0 last:pb-0"
-                  >
-                    <span className="font-serif text-xl font-medium text-[var(--brand)]">
-                      {index + 1}
-                    </span>
-                    <span>
-                      <b className="block font-serif text-lg font-medium text-[var(--near-black)]">
-                        {step.title}
-                      </b>
-                      <span className="mt-1 block text-sm leading-6 text-[var(--olive)]">
-                        {step.description}
-                      </span>
-                    </span>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-6xl px-5 pb-20 pt-10 sm:px-8">
-          <div className="dark-panel rounded-xl border border-[#2e3545] p-8 text-[#faf9f5] sm:p-10">
-            <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-              <div>
-                <p className="font-ui text-xs uppercase tracking-[0.08em] text-[#b7c5d7]">
-                  MVP demo
-                </p>
-                <h2 className="mt-3 font-serif text-4xl font-medium">
-                  Browse the seed registry.
-                </h2>
-                <p className="mt-4 max-w-2xl leading-7 text-[#c8c2ad]">
-                  Search, filter, inspect detail pages, download a generated
-                  skill manifest, and submit a future skill for review.
-                </p>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <Link
-                  href="/skills"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-[#faf9f5] px-6 py-3 font-serif text-sm font-medium text-[var(--brand)]"
-                >
-                  <Boxes className="h-4 w-4" />
-                  Browse Skills
-                </Link>
-                <Link
-                  href="/submit"
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-[#5a6b8a] px-6 py-3 font-serif text-sm font-medium text-[#faf9f5] transition hover:bg-[#202737]"
-                >
-                  <Sparkles className="h-4 w-4" />
-                  Submit a Skill
-                </Link>
-              </div>
+            <div className="mt-4 flex flex-col gap-3 sm:mt-0 sm:flex-row shrink-0">
+              <Link
+                href="/submit"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--brand)] px-5 py-2.5 font-serif text-sm font-medium text-[var(--ivory)] transition-all duration-200 hover:bg-[var(--brand-light)] hover:shadow active:scale-95"
+              >
+                Submit Rune
+              </Link>
+              <Link
+                href="/docs/package-format"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--brand)] px-5 py-2.5 font-serif text-sm font-medium text-[var(--brand)] hover:bg-[var(--brand-tint)] transition-all duration-200 active:scale-95"
+              >
+                <BookOpen className="h-4 w-4" />
+                Read Specifications
+              </Link>
             </div>
           </div>
         </section>

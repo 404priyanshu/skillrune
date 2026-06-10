@@ -431,6 +431,130 @@ export const skills: Skill[] = [
       "The skill builds short drills, worked examples, answer keys, and spaced review prompts.",
     ],
   },
+  {
+    slug: "find-skills",
+    name: "Find Skills",
+    shortDescription:
+      "A utility skill for searching and discovering other agent skills in the ecosystem.",
+    longDescription:
+      "Find Skills gives your agent access to searching the global directory, fetching metadata, and identifying relevant skills for task execution without manual context bloating.",
+    category: "Research",
+    tags: ["search", "discovery", "registry", "telemetry"],
+    supportedAgents: ["Claude Code", "Cursor", "Antigravity", "Cline"],
+    downloads: 115950,
+    rating: 4.9,
+    lastUpdated: "2026-06-08",
+    license: "MIT",
+    version: "1.0.0",
+    author: "Vercel Labs",
+    githubUrl: "https://github.com/vercel-labs/skills",
+    docsUrl: "https://skills.sh/docs/find-skills",
+    safetyNotes: [
+      "Read-only access to registry lists.",
+      "No network credentials required."
+    ],
+    files: [
+      { path: "SKILL.md", description: "Fuzzy matching and directory search instructions." }
+    ],
+    readme: [
+      "Use this skill to help agents search the registry for other skills.",
+      "Prevents manual query steps by performing fuzzy matching."
+    ],
+    featured: true,
+  },
+  {
+    slug: "frontend-design",
+    name: "Frontend Design",
+    shortDescription:
+      "Audits and improves frontend design details, accessibility, CSS visual details, and React layout conventions.",
+    longDescription:
+      "Frontend Design provides guidelines and instructions for visual design checks: typography scales, accessibility contrasts, spacing parameters, responsive layouts, and modern CSS conventions.",
+    category: "Design",
+    tags: ["frontend", "design", "css", "accessibility", "react"],
+    supportedAgents: ["Claude Code", "Cursor", "Cline", "Antigravity"],
+    downloads: 524300,
+    rating: 4.9,
+    lastUpdated: "2026-06-05",
+    license: "MIT",
+    version: "2.1.2",
+    author: "Anthropic",
+    githubUrl: "https://github.com/anthropics/skills",
+    docsUrl: "https://skills.sh/docs/frontend-design",
+    safetyNotes: [
+      "Does not modify build pipelines.",
+      "Vets color contrasts using WCAG standard equations."
+    ],
+    files: [
+      { path: "SKILL.md", description: "Design auditing rules and contrast checklists." }
+    ],
+    readme: [
+      "Use this skill when auditing UI styling, layouts, spacing, or component structures.",
+      "Helps agents adhere to clean visual guidelines."
+    ],
+    featured: true,
+  },
+  {
+    slug: "vercel-react-best-practices",
+    name: "React Best Practices",
+    shortDescription:
+      "Standardized React patterns, server component guidelines, and Next.js performance optimization rules.",
+    longDescription:
+      "React Best Practices provides structured advice for React 19 and Next.js development. Covers layout structuring, client-side caching, fetching priorities, and hydration warning fixes.",
+    category: "Coding",
+    tags: ["react", "nextjs", "coding", "performance", "optimization"],
+    supportedAgents: ["Claude Code", "Cursor", "Windsurf", "Antigravity"],
+    downloads: 464400,
+    rating: 4.8,
+    lastUpdated: "2026-06-03",
+    license: "MIT",
+    version: "1.1.0",
+    author: "Vercel Labs",
+    githubUrl: "https://github.com/vercel-labs/agent-skills",
+    docsUrl: "https://skills.sh/docs/vercel-react-best-practices",
+    safetyNotes: [
+      "Suggests adjustments without executing code by default.",
+      "Complies with Next.js App Router rules."
+    ],
+    files: [
+      { path: "SKILL.md", description: "React 19 pattern compliance and hydration rules." }
+    ],
+    readme: [
+      "Injects React and Next.js guidelines to help agents build efficient frontends.",
+      "Ensures correct Client/Server boundary separation."
+    ],
+    featured: true,
+  },
+  {
+    slug: "skill-creator",
+    name: "Skill Creator",
+    shortDescription:
+      "Iteratively build, configure, document, and publish custom skills for agent workflows.",
+    longDescription:
+      "Skill Creator helps agents build new skills matching the open standard. It constructs metadata headers, generates SKILL.md templates, validates folders, and prepares GitHub releases.",
+    category: "DevOps",
+    tags: ["skills", "cli", "publish", "generator", "standard"],
+    supportedAgents: ["Claude Code", "Cursor", "Antigravity"],
+    downloads: 387600,
+    rating: 4.7,
+    lastUpdated: "2026-06-07",
+    license: "MIT",
+    version: "0.9.1",
+    author: "Anthropic",
+    githubUrl: "https://github.com/anthropics/skills",
+    docsUrl: "https://skills.sh/docs/skill-creator",
+    safetyNotes: [
+      "Requires write permissions for local directories.",
+      "Prompts for confirmation before pushing to GitHub."
+    ],
+    files: [
+      { path: "SKILL.md", description: "Skill creation guides and manifest templates." }
+    ],
+    readme: [
+      "Builds and packages new skills for the Agent Skills ecosystem.",
+      "Walks developers through writing metadata, READMEs, and files."
+    ],
+    featured: true,
+  },
 ];
 
 export const allTags = Array.from(

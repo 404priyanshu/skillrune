@@ -65,7 +65,7 @@ textarea {
   background: var(--parchment);
   padding: 0.85rem 1rem;
   color: var(--near-black);
-  font-family: Charter, Georgia, Palatino, "Times New Roman", serif;
+  font-family: system-ui, -apple-system, sans-serif;
   font-size: 0.95rem;
   line-height: 1.45;
   outline: none;
@@ -80,3 +80,80 @@ textarea {
   border-color: var(--brand);
   box-shadow: 0 0 0 3px var(--brand-tint);
 }
+
+.font-ui {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+}
+
+/* Redesign custom properties & utilities */
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-carousel {
+  display: flex;
+  gap: 1.5rem;
+  width: max-content;
+  animation: marquee 40s linear infinite;
+}
+
+.animate-carousel:hover {
+  animation-play-state: paused;
+}
+
+/* Runic scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ivory);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-soft);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--stone);
+}
+
+/* Glassmorphism style parchment box */
+.parchment-glass {
+  background-color: rgba(250, 249, 245, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+}
+
+/* Subtle gold illumination */
+.gold-illuminate {
+  box-shadow: 0 0 15px rgba(216, 213, 200, 0.35);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.gold-illuminate:hover {
+  box-shadow: 0 0 25px rgba(27, 54, 93, 0.08), 0 0 10px rgba(216, 213, 200, 0.6);
+  border-color: var(--brand-light);
+}
+
+/* Terminal blink cursor */
+.terminal-cursor::after {
+  content: "█";
+  display: inline-block;
+  margin-left: 2px;
+  animation: blink 1s step-end infinite;
+  color: var(--brand-light);
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+

@@ -249,7 +249,7 @@ export function SubmitForm() {
         </p>
         <button
           type="submit"
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--brand)] px-6 py-3 font-serif text-sm font-medium text-[var(--ivory)] transition hover:bg-[var(--brand-light)]"
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--brand)] px-6 py-3 font-serif text-sm font-medium text-[var(--ivory)] transition-all duration-200 hover:bg-[var(--brand-light)] hover:shadow active:scale-95 cursor-pointer"
         >
           <Send className="h-4 w-4" />
           Submit for review
@@ -259,10 +259,10 @@ export function SubmitForm() {
       <div className="border-t border-[var(--border-soft)] pt-6">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="font-ui text-xs uppercase tracking-[0.08em] text-[var(--brand)]">
+            <p className="font-ui text-xs font-bold uppercase tracking-[0.1em] text-[var(--brand-light)]">
               Local review queue
             </p>
-            <h2 className="mt-2 font-serif text-2xl font-medium text-[var(--near-black)]">
+            <h2 className="mt-2 font-serif text-2xl font-bold text-[var(--near-black)]">
               Submitted → pending → approved/rejected
             </h2>
           </div>
@@ -276,25 +276,25 @@ export function SubmitForm() {
             No local submissions yet. Submit a skill above to see review state.
           </div>
         ) : (
-          <div className="mt-5 grid gap-3">
+          <div className="mt-5 grid gap-4">
             {submissions.map((submission) => (
               <article
                 key={submission.id}
-                className="rounded-lg border border-[var(--border)] bg-[var(--parchment)] p-4"
+                className="rounded-lg border border-[var(--border)] bg-[var(--ivory)] p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow gold-illuminate"
               >
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <div>
                     <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="font-serif text-xl font-medium text-[var(--near-black)]">
+                      <h3 className="font-serif text-xl font-bold text-[var(--near-black)]">
                         {submission.name}
                       </h3>
                       <span
-                        className={`rounded-full px-2.5 py-1 font-ui text-xs ${
+                        className={`rounded-full px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase border ${
                           submission.status === "approved"
-                            ? "bg-[#f0f4ea] text-[#446b36]"
+                            ? "bg-[#f0f4ea] border-[#c8d8c2] text-[#446b36]"
                             : submission.status === "rejected"
-                              ? "bg-[#fbf1eb] text-[#8a3b24]"
-                              : "bg-[var(--brand-tint)] text-[var(--brand)]"
+                              ? "bg-[#fbf1eb] border-[#dec5b8] text-[#8a3b24]"
+                              : "bg-[var(--brand-tint)] border-[var(--border-soft)] text-[var(--brand)]"
                         }`}
                       >
                         {submission.status}
@@ -303,32 +303,32 @@ export function SubmitForm() {
                     <p className="mt-2 text-sm leading-6 text-[var(--olive)]">
                       {submission.shortDescription}
                     </p>
-                    <p className="mt-2 font-ui text-xs text-[var(--stone)]">
+                    <p className="mt-2.5 font-ui text-[11px] uppercase tracking-wider text-[var(--stone)] font-bold">
                       {submission.category} · {submission.license} ·{" "}
                       {new Date(submission.submittedAt).toLocaleString()}
                     </p>
                   </div>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 shrink-0">
                     <button
                       type="button"
                       onClick={() => setStatus(submission.id, "approved")}
-                      className="rounded-full border border-[#c8d8c2] px-3 py-1.5 font-ui text-xs text-[#446b36]"
+                      className="rounded-full border border-[#c8d8c2] px-3.5 py-1.5 font-ui text-xs font-semibold text-[#446b36] hover:bg-[#f0f4ea] transition-all cursor-pointer"
                     >
                       Approve
                     </button>
                     <button
                       type="button"
                       onClick={() => setStatus(submission.id, "rejected")}
-                      className="rounded-full border border-[#dec5b8] px-3 py-1.5 font-ui text-xs text-[#8a3b24]"
+                      className="rounded-full border border-[#dec5b8] px-3.5 py-1.5 font-ui text-xs font-semibold text-[#8a3b24] hover:bg-[#fbf1eb] transition-all cursor-pointer"
                     >
                       Reject
                     </button>
                     <button
                       type="button"
                       onClick={() => removeSubmission(submission.id)}
-                      className="inline-flex items-center gap-1 rounded-full border border-[var(--border-soft)] px-3 py-1.5 font-ui text-xs text-[var(--stone)]"
+                      className="inline-flex items-center gap-1 rounded-full border border-[var(--border-soft)] px-3.5 py-1.5 font-ui text-xs text-[var(--stone)] hover:bg-[var(--parchment)] transition-all cursor-pointer"
                     >
-                      <Trash2 className="h-3 w-3" />
+                      <Trash2 className="h-3.5 w-3.5" />
                       Remove
                     </button>
                   </div>

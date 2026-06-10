@@ -42,38 +42,47 @@ export default function CategoriesPage() {
           </p>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {categories.map((category) => {
             const categorySkills = skills.filter((skill) => skill.category === category);
             return (
               <Link
                 href={`/skills?category=${encodeURIComponent(category)}`}
                 key={category}
-                className="group rounded-xl border border-[var(--border)] bg-[var(--ivory)] p-6 transition hover:-translate-y-0.5 hover:border-[var(--line)] hover:shadow-[0_10px_30px_rgba(20,19,19,0.07)]"
+                className="group rounded-xl border border-[var(--border)] bg-[var(--ivory)] p-6 transition-all duration-300 hover:-translate-y-1 gold-illuminate"
               >
                 <div className="flex items-start justify-between gap-4">
-                  <Boxes className="h-5 w-5 text-[var(--brand)]" />
-                  <ArrowRight className="h-4 w-4 text-[var(--stone)] transition group-hover:translate-x-0.5 group-hover:text-[var(--brand)]" />
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--parchment)] text-[var(--brand)] shadow-sm">
+                    <Boxes className="h-5 w-5" />
+                  </div>
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--parchment)] text-[var(--stone)] transition group-hover:bg-[var(--brand-tint)] group-hover:text-[var(--brand)]">
+                    <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
+                  </div>
                 </div>
-                <h2 className="mt-6 font-serif text-2xl font-medium text-[var(--near-black)]">
-                  {category}
-                </h2>
-                <p className="mt-3 min-h-[72px] text-sm leading-6 text-[var(--olive)]">
+                <div className="mt-5 flex items-baseline justify-between gap-2 border-b border-[var(--border-soft)] pb-2 mb-3">
+                  <h2 className="font-serif text-2xl font-bold text-[var(--near-black)]">
+                    {category}
+                  </h2>
+                  <span className="font-mono text-xs font-bold text-[var(--stone)] bg-[var(--parchment)] border border-[var(--border)] rounded px-1.5 py-0.5">
+                    {categorySkills.length} runes
+                  </span>
+                </div>
+                <p className="min-h-[72px] text-sm leading-6 text-[var(--olive)] font-ui">
                   {categoryDescriptions[category]}
                 </p>
-                <div className="mt-5 flex flex-wrap gap-2">
+                <div className="mt-4 flex flex-wrap gap-1.5">
                   {categorySkills.length > 0 ? (
                     categorySkills.slice(0, 3).map((skill) => (
                       <span
                         key={skill.slug}
-                        className="rounded-full bg-[var(--brand-tint)] px-2.5 py-1 font-ui text-xs text-[var(--brand)]"
+                        className="rounded-full bg-[var(--brand-tint)] px-2.5 py-0.5 font-mono text-[10px] font-semibold text-[var(--brand)] border border-[var(--border-soft)]"
                       >
                         {skill.name}
                       </span>
                     ))
                   ) : (
-                    <span className="rounded-full bg-[var(--warm-sand)] px-2.5 py-1 font-ui text-xs text-[var(--stone)]">
-                      Awaiting first skill
+                    <span className="rounded-full bg-[var(--parchment)] px-2.5 py-0.5 font-ui text-[10px] uppercase font-bold tracking-wider text-[var(--stone)] border border-[var(--border-soft)]">
+                      Awaiting first rune
                     </span>
                   )}
                 </div>

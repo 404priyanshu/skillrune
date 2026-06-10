@@ -1,28 +1,47 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { Search, SlidersHorizontal, XCircle } from "lucide-react";
+import Link from "next/link";
+import { useMemo, useState, useEffect, useRef } from "react";
+import { Search, SlidersHorizontal, XCircle, Grid, List, ArrowRight, Download, Star } from "lucide-react";
 import { SkillCard } from "@/components/SkillCard";
-import { allTags, categories, skills } from "@/lib/skills";
+import { Sparkline } from "@/components/Sparkline";
+import { allTags, categories, skills, formatDownloads } from "@/lib/skills";
 
 type SortMode = "featured" | "newest" | "downloads" | "rating";
 
 const sortOptions: { value: SortMode; label: string }[] = [
   { value: "featured", label: "Featured" },
-  { value: "newest", label: "Newest" },
-  { value: "downloads", label: "Most downloaded" },
-  { value: "rating", label: "Highest rated" },
+  { value: "newest", label: "Newest Runes" },
+  { value: "downloads", label: "Most Equipped" },
+  { value: "rating", label: "Highest Power" },
 ];
 
 export function SkillsBrowser({
   initialCategory = "All",
+  compact = false,
 }: {
   initialCategory?: string;
+  compact?: boolean;
 }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState(initialCategory);
   const [tag, setTag] = useState("All");
   const [sortMode, setSortMode] = useState<SortMode>("featured");
+  const [viewLayout, setViewLayout] = useState<"leaderboard" | "grid">(compact ? "leaderboard" : "grid");
+
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // Focus search input when pressing "/"
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "/" && document.activeElement !== searchInputRef.current) {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   const filtered = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -32,8 +51,7 @@ export function SkillsBrowser({
         score: getSearchScore(skill, normalizedQuery),
       }))
       .filter(({ skill, score }) => {
-        const matchesQuery =
-          normalizedQuery.length === 0 || score > 0;
+        const matchesQuery = normalizedQuery.length === 0 || score > 0;
         const matchesCategory = category === "All" || skill.category === category;
         const matchesTag = tag === "All" || skill.tags.includes(tag);
         return matchesQuery && matchesCategory && matchesTag;
@@ -64,102 +82,236 @@ export function SkillsBrowser({
   }
 
   return (
-    <div>
-      <div className="rounded-xl border border-[var(--border)] bg-[var(--ivory)] p-5">
+    <div className="space-y-6">
+      {/* Search and Filters Shelf */}
+      <div className="rounded-xl border border-[var(--border)] bg-[var(--ivory)] p-4 shadow-sm">
         <div className="grid gap-4 lg:grid-cols-[1fr_220px_220px]">
-          <label className="relative block">
+          <div className="relative">
             <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--stone)]" />
             <input
+              ref={searchInputRef}
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search skills, tags, agents, authors, licenses..."
-              className="h-12 w-full rounded-full border border-[var(--border-soft)] bg-[var(--parchment)] pl-11 pr-4 font-ui text-sm text-[var(--near-black)] outline-none transition placeholder:text-[var(--stone)] focus:border-[var(--brand)]"
+              placeholder="Search runes, tags, agents, authors..."
+              className="h-12 w-full rounded-full border border-[var(--border-soft)] bg-[var(--parchment)] pl-11 pr-12 font-mono text-sm text-[var(--near-black)] outline-none transition focus:border-[var(--brand)] focus:ring-2 focus:ring-[var(--brand-tint)] placeholder:text-[var(--stone)]"
             />
-          </label>
-          <select
-            value={category}
-            onChange={(event) => setCategory(event.target.value)}
-            className="h-12 rounded-full border border-[var(--border-soft)] bg-[var(--parchment)] px-4 font-ui text-sm text-[var(--dark-warm)] outline-none focus:border-[var(--brand)]"
-          >
-            <option>All</option>
-            {categories.map((item) => (
-              <option key={item}>{item}</option>
-            ))}
-          </select>
-          <select
-            value={tag}
-            onChange={(event) => setTag(event.target.value)}
-            className="h-12 rounded-full border border-[var(--border-soft)] bg-[var(--parchment)] px-4 font-ui text-sm text-[var(--dark-warm)] outline-none focus:border-[var(--brand)]"
-          >
-            <option>All</option>
-            {allTags.map((item) => (
-              <option key={item}>{item}</option>
-            ))}
-          </select>
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none hidden sm:flex">
+              <kbd className="text-[10px] bg-[var(--ivory)] border border-[var(--border)] text-[var(--stone)] px-1.5 py-0.5 rounded font-mono font-bold">
+                /
+              </kbd>
+            </div>
+          </div>
+          <div className="relative">
+            <select
+              value={category}
+              onChange={(event) => setCategory(event.target.value)}
+              className="h-12 w-full appearance-none rounded-full border border-[var(--border-soft)] bg-[var(--parchment)] px-5 pr-10 font-ui text-sm text-[var(--dark-warm)] outline-none transition focus:border-[var(--brand)] cursor-pointer"
+            >
+              <option value="All">All Categories</option>
+              {categories.map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+            <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 border-l-4 border-r-4 border-t-4 border-transparent border-t-[var(--stone)]"></div>
+          </div>
+          <div className="relative">
+            <select
+              value={tag}
+              onChange={(event) => setTag(event.target.value)}
+              className="h-12 w-full appearance-none rounded-full border border-[var(--border-soft)] bg-[var(--parchment)] px-5 pr-10 font-ui text-sm text-[var(--dark-warm)] outline-none transition focus:border-[var(--brand)] cursor-pointer"
+            >
+              <option value="All">All Tags</option>
+              {allTags.map((item) => (
+                <option key={item} value={item}>
+                  #{item}
+                </option>
+              ))}
+            </select>
+            <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 border-l-4 border-r-4 border-t-4 border-transparent border-t-[var(--stone)]"></div>
+          </div>
         </div>
 
-        <div className="mt-5 flex flex-col gap-4 border-t border-[var(--border-soft)] pt-5 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex items-center gap-2 font-ui text-xs uppercase tracking-[0.08em] text-[var(--stone)]">
-            <SlidersHorizontal className="h-4 w-4" />
-            Sort
+        {/* Sort and Layout Controls */}
+        <div className="mt-4 flex flex-col gap-4 border-t border-[var(--border-soft)] pt-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex items-center gap-1.5 font-ui text-xs font-semibold uppercase tracking-[0.1em] text-[var(--stone)] mr-2">
+              <SlidersHorizontal className="h-3.5 w-3.5" />
+              Sort
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {sortOptions.map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => setSortMode(option.value)}
+                  className={`rounded-full border px-4 py-1.5 font-ui text-xs font-semibold transition-all duration-200 cursor-pointer ${
+                    sortMode === option.value
+                      ? "border-[var(--brand)] bg-[var(--brand-tint)] text-[var(--brand)] shadow-sm"
+                      : "border-[var(--border-soft)] text-[var(--olive)] hover:border-[var(--line)] bg-[var(--parchment)]"
+                  }`}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
           </div>
-          <div className="flex flex-wrap gap-2">
-            {sortOptions.map((option) => (
+
+          <div className="flex items-center gap-2 border-l border-none sm:border-l sm:border-[var(--border-soft)] sm:pl-4">
+            <span className="font-ui text-xs font-semibold uppercase tracking-[0.1em] text-[var(--stone)] hidden sm:inline">
+              Layout
+            </span>
+            <div className="flex rounded-lg border border-[var(--border)] bg-[var(--parchment)] p-0.5">
               <button
-                key={option.value}
                 type="button"
-                onClick={() => setSortMode(option.value)}
-                className={`rounded-full border px-3.5 py-2 font-ui text-xs transition ${
-                  sortMode === option.value
-                    ? "border-[var(--brand)] bg-[var(--brand-tint)] text-[var(--brand)]"
-                    : "border-[var(--border-soft)] text-[var(--olive)] hover:border-[var(--line)]"
+                onClick={() => setViewLayout("leaderboard")}
+                className={`p-1.5 rounded-md transition-all cursor-pointer ${
+                  viewLayout === "leaderboard"
+                    ? "bg-[var(--ivory)] text-[var(--brand)] shadow-sm"
+                    : "text-[var(--stone)] hover:text-[var(--olive)]"
                 }`}
+                title="Leaderboard view"
               >
-                {option.label}
+                <List className="h-4 w-4" />
               </button>
-            ))}
+              <button
+                type="button"
+                onClick={() => setViewLayout("grid")}
+                className={`p-1.5 rounded-md transition-all cursor-pointer ${
+                  viewLayout === "grid"
+                    ? "bg-[var(--ivory)] text-[var(--brand)] shadow-sm"
+                    : "text-[var(--stone)] hover:text-[var(--olive)]"
+                }`}
+                title="Grid view"
+              >
+                <Grid className="h-4 w-4" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      {/* Summary Info & Filters Reset */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="font-ui text-sm text-[var(--stone)]">
-          Showing <b className="font-medium text-[var(--dark-warm)]">{filtered.length}</b>{" "}
-          of {skills.length} skills
+          Discovered <b className="font-semibold text-[var(--dark-warm)]">{filtered.length}</b>{" "}
+          of {skills.length} ancient runes
         </p>
         {(query || category !== "All" || tag !== "All" || sortMode !== "featured") && (
           <button
             type="button"
             onClick={clearFilters}
-            className="inline-flex items-center gap-2 self-start font-ui text-sm text-[var(--brand)]"
+            className="inline-flex items-center gap-1.5 self-start font-ui text-sm font-semibold text-[var(--brand)] hover:text-[var(--brand-light)] transition-colors cursor-pointer"
           >
             <XCircle className="h-4 w-4" />
-            Clear filters
+            Reset Filters
           </button>
         )}
       </div>
 
+      {/* Runic List/Leaderboard Display */}
       {filtered.length > 0 ? (
-        <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {filtered.map((skill) => (
-            <SkillCard key={skill.slug} skill={skill} />
-          ))}
-        </div>
+        <>
+          {viewLayout === "leaderboard" ? (
+            <div className="overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--ivory)] shadow-sm">
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse text-left">
+                  <thead>
+                    <tr className="border-b border-[var(--border)] bg-[var(--parchment)]/50 font-ui text-xs font-semibold uppercase tracking-[0.1em] text-[var(--stone)]">
+                      <th className="py-4 pl-5 w-12 text-center">#</th>
+                      <th className="py-4 px-4 min-w-[200px]">Rune & Purpose</th>
+                      <th className="py-4 px-4 w-[160px] text-center hidden md:table-cell">8W Activity</th>
+                      <th className="py-4 px-4 w-[120px] text-center">Equips</th>
+                      <th className="py-4 px-4 w-[100px] text-center hidden sm:table-cell">Rating</th>
+                      <th className="py-4 pr-5 w-28 text-right">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[var(--border-soft)] font-serif">
+                    {(compact ? filtered.slice(0, 7) : filtered).map((skill, index) => (
+                      <tr
+                        key={skill.slug}
+                        className="group transition-colors hover:bg-[var(--brand-tint)]/25"
+                      >
+                        <td className="py-4 pl-5 text-center font-mono text-sm text-[var(--stone)] font-bold">
+                          {index + 1}
+                        </td>
+                        <td className="py-4 px-4 min-w-0">
+                          <Link href={`/skills/${skill.slug}`} className="block group/title">
+                            <span className="font-serif text-base font-bold text-[var(--near-black)] group-hover/title:text-[var(--brand)] transition-colors">
+                              {skill.name}
+                            </span>
+                            <span className="ml-2 rounded-md bg-[var(--brand-tint)] px-1.5 py-0.5 font-mono text-[10px] font-semibold text-[var(--brand)] border border-[var(--border-soft)] uppercase">
+                              {skill.version}
+                            </span>
+                            <span className="block font-ui text-xs text-[var(--olive)] mt-1 line-clamp-1 max-w-xl">
+                              {skill.shortDescription}
+                            </span>
+                          </Link>
+                        </td>
+                        <td className="py-2 px-4 text-center hidden md:table-cell">
+                          <div className="flex justify-center">
+                            <Sparkline slug={skill.slug} isGold={skill.featured} />
+                          </div>
+                        </td>
+                        <td className="py-4 px-4 text-center font-mono text-sm text-[var(--dark-warm)] font-medium">
+                          {formatDownloads(skill.downloads)}
+                        </td>
+                        <td className="py-4 px-4 text-center hidden sm:table-cell">
+                          <div className="inline-flex items-center gap-1 font-mono text-sm font-bold text-[var(--near-black)]">
+                            <Star className="h-3.5 w-3.5 fill-[var(--brand)] text-[var(--brand)]" />
+                            {skill.rating.toFixed(1)}
+                          </div>
+                        </td>
+                        <td className="py-4 pr-5 text-right">
+                          <Link
+                            href={`/skills/${skill.slug}`}
+                            className="inline-flex items-center gap-1 font-ui text-xs font-bold text-[var(--brand)] hover:text-[var(--brand-light)] transition-all group-hover:translate-x-1"
+                          >
+                            Equip <ArrowRight className="h-3.5 w-3.5" />
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ) : (
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              {(compact ? filtered.slice(0, 6) : filtered).map((skill) => (
+                <SkillCard key={skill.slug} skill={skill} />
+              ))}
+            </div>
+          )}
+
+          {compact && filtered.length > (viewLayout === "leaderboard" ? 7 : 6) && (
+            <div className="mt-6 text-center">
+              <Link
+                href="/skills"
+                className="inline-flex items-center justify-center gap-1.5 rounded-full border border-[var(--brand)] px-6 py-2.5 font-serif text-sm font-medium text-[var(--brand)] transition-all duration-200 hover:bg-[var(--brand-tint)] hover:shadow active:scale-95 cursor-pointer"
+              >
+                Inspect All {filtered.length} Runes
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          )}
+        </>
       ) : (
-        <div className="mt-6 rounded-xl border border-dashed border-[var(--line)] bg-[var(--ivory)] p-10 text-center">
-          <Search className="mx-auto h-8 w-8 text-[var(--brand)]" />
+        <div className="rounded-xl border border-dashed border-[var(--line)] bg-[var(--ivory)] p-12 text-center shadow-sm">
+          <Search className="mx-auto h-10 w-10 text-[var(--brand-light)] opacity-75" />
           <h2 className="mt-4 font-serif text-2xl font-medium text-[var(--near-black)]">
-            No matching skills
+            No Runes Discovered
           </h2>
-          <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-[var(--olive)]">
-            Try a broader query, remove a tag, or switch back to all categories.
+          <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-[var(--olive)]">
+            Your search query was too specific or did not match any skills in our archives.
           </p>
           <button
             type="button"
             onClick={clearFilters}
-            className="mt-6 rounded-full border border-[var(--brand)] px-5 py-2.5 font-serif text-sm font-medium text-[var(--brand)] transition hover:bg-[var(--brand-tint)]"
+            className="mt-6 rounded-full border border-[var(--brand)] px-6 py-2.5 font-serif text-sm font-medium text-[var(--brand)] transition-all duration-200 hover:bg-[var(--brand-tint)] active:scale-95 cursor-pointer"
           >
-            Reset search
+            Reset Catalog search
           </button>
         </div>
       )}
@@ -167,7 +319,7 @@ export function SkillsBrowser({
   );
 }
 
-function getSearchScore(skill: (typeof skills)[number], query: string) {
+function getSearchScore(skill: typeof skills[number], query: string) {
   if (!query) return 0;
   let score = 0;
   const name = skill.name.toLowerCase();

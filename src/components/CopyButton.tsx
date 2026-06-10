@@ -26,10 +26,14 @@ export function CopyButton({
     <button
       type="button"
       onClick={copy}
-      className="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--brand)] px-4 py-2.5 font-serif text-sm font-medium text-[var(--brand)] transition hover:bg-[var(--brand-tint)]"
+      className={`inline-flex items-center justify-center gap-2 rounded-full border px-5 py-2.5 font-serif text-sm font-medium transition-all duration-200 active:scale-95 cursor-pointer ${
+        copied
+          ? "border-[#446b36] bg-[#f0f4ea] text-[#446b36]"
+          : "border-[var(--brand)] bg-[var(--ivory)] text-[var(--brand)] hover:bg-[var(--brand-tint)] hover:shadow-sm"
+      }`}
     >
       {copied ? <Check className="h-4 w-4" /> : <Clipboard className="h-4 w-4" />}
-      {copied ? "Copied" : label}
+      {copied ? "Copied Spell" : label}
     </button>
   );
 }
