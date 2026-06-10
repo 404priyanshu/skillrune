@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SkillRune · Reusable skills for AI agents</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="SkillRune is a curated registry for discovering, inspecting, and installing reusable AI agent skills.">
+<meta name="keywords" content="SkillRune, AI agent skills, agent registry, reusable skills, developer tools">
+<meta name="author" content="SkillRune">
+<meta property="og:title" content="SkillRune · Reusable skills for AI agents">
+<meta property="og:description" content="Discover, inspect, and download agent skills that give models new capabilities.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://skillrune.com/">
+<meta property="og:site_name" content="SkillRune">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SkillRune · Reusable skills for AI agents">
+<meta name="twitter:description" content="Discover, inspect, and download agent skills that give models new capabilities.">
+<link rel="canonical" href="https://skillrune.com/">
+<link rel="alternate" type="text/plain" href="https://skillrune.com/llms.txt">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%231B365D'/%3E%3Cpath d='M20 48 32 10l12 38M24 35h16M32 10v44' fill='none' stroke='%23faf9f5' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "SkillRune",
+  "url": "https://skillrune.com/",
+  "description": "A curated registry for reusable AI agent skills.",
+  "inLanguage": "en"
+}
+</script>
+<style>
+:root {
+  --parchment: #f5f4ed;
+  --ivory: #faf9f5;
+  --warm-sand: #e8e6dc;
+  --brand: #1B365D;
+  --brand-light: #2D5A8A;
+  --brand-tint: #EEF2F7;
+  --near-black: #141413;
+  --dark-warm: #3d3d3a;
+  --olive: #504e49;
+  --stone: #6b6a64;
+  --border: #e8e6dc;
+  --border-soft: #e5e3d8;
+  --line: #d8d5c8;
+  --serif: Charter, Georgia, Palatino, "Times New Roman", serif;
+  --sans: var(--serif);
+  --mono: "JetBrains Mono", "Fira Code", "SF Mono", Consolas, Monaco, monospace;
+  --latin-ui: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --shot-bg: #141318;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--parchment);
+  color: var(--near-black);
+  font-family: var(--serif);
+  font-size: 15px;
+  line-height: 1.55;
+  letter-spacing: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--brand);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+a:hover { color: var(--brand-light); }
+
+button, a { -webkit-tap-highlight-color: transparent; }
+
+.page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 76px 64px 108px;
+}
+
+.btn-primary,
+.btn-ghost,
+.copy-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 158px;
+  padding: 13px 28px;
+  border-radius: 999px;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 1.2;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.15s;
+}
+.btn-primary {
+  background: var(--brand);
+  color: var(--ivory);
+  border: 1.5px solid var(--brand);
+}
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  background: var(--brand-light);
+  border-color: var(--brand-light);
+  color: var(--ivory);
+  transform: translateY(-1px);
+}
+.btn-ghost,
+.copy-button {
+  background: transparent;
+  color: var(--brand);
+  border: 1.5px solid var(--brand);
+}
+.btn-ghost:hover,
+.btn-ghost:focus-visible,
+.copy-button:hover,
+.copy-button:focus-visible {
+  background: var(--brand-tint);
+  color: var(--brand);
+  transform: translateY(-1px);
+}
+.copy-button {
+  min-width: 148px;
+  padding: 10px 18px;
+  font-size: 13px;
+}
+
+.hero {
+  padding-bottom: 44px;
+  border-bottom: 1px solid var(--border-soft);
+  margin-bottom: 72px;
+}
+.eyebrow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 22px;
+  font-family: var(--latin-ui);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--stone);
+}
+.version-link {
+  color: var(--brand);
+  font-weight: 600;
+}
+.hero-links {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  white-space: nowrap;
+}
+.hero-links a { color: var(--stone); }
+.hero-links a:hover { color: var(--dark-warm); }
+
+.brand-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+.rune-mark {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  color: var(--brand);
+  flex: 0 0 auto;
+}
+.rune-mark svg { display: block; width: 100%; height: 100%; }
+
+.hero h1 {
+  max-width: 980px;
+  margin: 0 0 18px;
+  color: var(--near-black);
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 88px;
+  line-height: 1.05;
+  letter-spacing: 0;
+  opacity: 0;
+  transform: translateY(10px);
+  filter: blur(6px);
+  animation: hero-rise 900ms cubic-bezier(0.16, 1, 0.3, 1) 120ms forwards;
+}
+@keyframes hero-rise {
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+.tagline {
+  max-width: 790px;
+  margin: 0 0 28px;
+  color: var(--olive);
+  font-family: var(--serif);
+  font-size: 21px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0.2px;
+}
+.hero-tokens {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin: 0 0 32px;
+  color: var(--stone);
+  font-family: var(--latin-ui);
+  font-size: 13px;
+}
+.hero-tokens span {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.hero-tokens b {
+  color: var(--dark-warm);
+  font-weight: 500;
+}
+.hero-cta {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+section { margin-bottom: 72px; }
+.section-head { margin-bottom: 24px; }
+.section-num {
+  margin: 0 0 6px;
+  color: var(--brand);
+  font-family: var(--latin-ui);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.4px;
+}
+.section-title {
+  margin: 0;
+  color: var(--near-black);
+  font-family: var(--serif);
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+.section-lede {
+  max-width: 760px;
+  margin: 14px 0 0;
+  color: var(--olive);
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.55;
+}
+.section-versus {
+  margin: 14px 0 0;
+  color: var(--stone);
+  font-size: 14px;
+  line-height: 1.55;
+}
+.section-versus b {
+  color: var(--brand);
+  font-weight: 500;
+}
+
+.gallery {
+  --enter-from-x: 44px;
+  --exit-to-x: -34px;
+  --sweep-angle: 100deg;
+  --sweep-from: -45%;
+  --sweep-to: 65%;
+  --caption-shift: -2px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 24px;
+  align-items: baseline;
+  margin: 0;
+  padding: 0;
+}
+.gallery[data-direction="prev"] {
+  --enter-from-x: -44px;
+  --exit-to-x: 34px;
+  --sweep-angle: 260deg;
+  --sweep-from: 65%;
+  --sweep-to: -45%;
+  --caption-shift: 2px;
+}
+.gallery-frame {
+  grid-column: 1 / -1;
+  position: relative;
+  min-height: 452px;
+  overflow: hidden;
+  background: var(--shot-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(20, 19, 19, 0.10);
+  cursor: ew-resize;
+}
+.gallery-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background: linear-gradient(
+    var(--sweep-angle),
+    rgba(245, 244, 237, 0) 32%,
+    rgba(245, 244, 237, 0.16) 50%,
+    rgba(245, 244, 237, 0) 68%
+  );
+  opacity: 0;
+  transform: translate3d(var(--sweep-from), 0, 0);
+  transition: opacity 540ms ease, transform 920ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.gallery.is-switching .gallery-frame::after {
+  opacity: 1;
+  transform: translate3d(var(--sweep-to), 0, 0);
+}
+.gallery-panel {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 1;
+  transform: translate3d(var(--enter-from-x), 0, 0) scale(0.985);
+  transition: opacity 620ms cubic-bezier(0.22, 1, 0.36, 1),
+              transform 880ms cubic-bezier(0.22, 1, 0.36, 1),
+              visibility 620ms;
+  will-change: opacity, transform;
+}
+.gallery-panel.is-active {
+  position: relative;
+  z-index: 2;
+  opacity: 1;
+  visibility: visible;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+.gallery-panel.was-active {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  opacity: 0;
+  visibility: visible;
+  transform: translate3d(var(--exit-to-x), 0, 0) scale(0.985);
+  pointer-events: none;
+}
+.gallery-caption {
+  grid-column: 1;
+  grid-row: 2;
+  min-height: 48px;
+  padding: 12px 2px 0;
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  transition: opacity 420ms ease, transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.gallery.is-switching .gallery-caption {
+  opacity: 0.72;
+  transform: translate3d(var(--caption-shift), 0, 0);
+}
+.gallery-caption .title {
+  flex: 0 0 auto;
+  margin: 0;
+  color: var(--near-black);
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+}
+.gallery-caption .line {
+  margin: 0;
+  color: var(--olive);
+  font-family: var(--serif);
+  font-size: 14px;
+  font-style: normal;
+}
+.gallery-tabs {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+.gallery-tabs button {
+  appearance: none;
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--olive);
+  font-family: var(--latin-ui);
+  font-size: 12px;
+  line-height: 1;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+.gallery-tabs button:hover {
+  color: var(--brand);
+  border-color: var(--line);
+}
+.gallery-tabs button.is-active {
+  color: var(--brand);
+  background: var(--brand-tint);
+  border-color: var(--line);
+}
+
+.mock-screen {
+  min-height: 452px;
+  padding: 28px;
+  color: #faf9f5;
+  font-family: var(--serif);
+}
+.mock-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 22px;
+  color: #c8c2ad;
+  font-family: var(--latin-ui);
+  font-size: 12px;
+  letter-spacing: 0.3px;
+}
+.mock-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: #faf9f5;
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+.mock-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.mock-chip,
+.skill-tag,
+.category-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  border-radius: 999px;
+  font-family: var(--latin-ui);
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0.2px;
+}
+.mock-chip {
+  padding: 7px 10px;
+  background: #202737;
+  color: #c8d4e5;
+  border: 1px solid #313b50;
+}
+.mock-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 18px;
+}
+.mock-search {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  border: 1px solid #303746;
+  border-radius: 8px;
+  background: #191d27;
+  color: #c8c2ad;
+  font-family: var(--latin-ui);
+  font-size: 13px;
+}
+.mock-command {
+  color: #8fb0d2;
+  font-family: var(--mono);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.mock-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.mock-card,
+.mock-panel,
+.mock-file,
+.skill-card,
+.category-card,
+.install-card {
+  border-radius: 8px;
+}
+.mock-card {
+  min-height: 154px;
+  padding: 15px;
+  border: 1px solid #303746;
+  background: #181c25;
+}
+.mock-card.featured {
+  background: #1d2430;
+  border-color: #44516a;
+}
+.mock-card h3,
+.mock-panel h3,
+.mock-file h3 {
+  margin: 0 0 8px;
+  color: #faf9f5;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+.mock-card p,
+.mock-panel p,
+.mock-file p {
+  margin: 0;
+  color: #c8c2ad;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.mock-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 14px;
+  color: #b7c5d7;
+  font-family: var(--latin-ui);
+  font-size: 11px;
+}
+.mock-side {
+  display: grid;
+  gap: 12px;
+}
+.mock-panel {
+  padding: 16px;
+  border: 1px solid #303746;
+  background: #191d27;
+}
+.mock-panel .meter {
+  margin-top: 14px;
+  height: 7px;
+  border-radius: 999px;
+  background: #283244;
+  overflow: hidden;
+}
+.mock-panel .meter span {
+  display: block;
+  height: 100%;
+  width: 76%;
+  background: #8fb0d2;
+}
+.mock-file-list {
+  display: grid;
+  gap: 10px;
+}
+.mock-file {
+  padding: 14px 16px;
+  border: 1px solid #303746;
+  background: #181c25;
+}
+.mock-file code {
+  display: block;
+  margin-top: 8px;
+  color: #8fb0d2;
+  font-family: var(--mono);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.mock-submit {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.mock-field {
+  min-height: 62px;
+  padding: 12px 14px;
+  border: 1px solid #303746;
+  border-radius: 8px;
+  background: #191d27;
+}
+.mock-field.wide { grid-column: 1 / -1; min-height: 98px; }
+.mock-field span {
+  display: block;
+  color: #9ea8b8;
+  font-family: var(--latin-ui);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.mock-field b {
+  display: block;
+  margin-top: 7px;
+  color: #faf9f5;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.features {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--border-soft);
+}
+.features li {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  column-gap: 36px;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--border-soft);
+  align-items: baseline;
+}
+.features .name {
+  margin: 0;
+  color: var(--brand);
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+.features .name small {
+  display: block;
+  margin-top: 4px;
+  color: var(--olive);
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.4;
+}
+.features .what {
+  margin: 0;
+  color: var(--dark-warm);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.principles {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid var(--border-soft);
+}
+.principles li {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 8px;
+  padding: 22px 28px 22px 0;
+  border-bottom: 1px solid var(--border-soft);
+  align-items: baseline;
+}
+.principles li:nth-child(odd) {
+  padding-right: 32px;
+  border-right: 1px solid var(--border-soft);
+}
+.principles li:nth-child(even) { padding-left: 32px; }
+.principles .n {
+  color: var(--brand);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1;
+}
+.principles .body b {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--near-black);
+  font-size: 15px;
+  font-weight: 500;
+}
+.principles .body span {
+  color: var(--olive);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  margin-top: 26px;
+}
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.metric-value {
+  color: var(--near-black);
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 1;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.metric-label {
+  color: var(--stone);
+  font-family: var(--latin-ui);
+  font-size: 13px;
+}
+
+.skill-grid,
+.category-grid {
+  display: grid;
+  gap: 18px;
+}
+.skill-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.category-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.skill-card,
+.category-card,
+.install-card {
+  background: var(--ivory);
+  border: 1px solid var(--border);
+}
+.skill-card {
+  min-height: 236px;
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.skill-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
+}
+.skill-card h3 {
+  margin: 0 0 8px;
+  color: var(--near-black);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+.skill-card p {
+  margin: 0;
+  color: var(--olive);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.skill-card footer {
+  margin-top: auto;
+  padding-top: 16px;
+}
+.skill-card .meta-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 12px;
+  color: var(--stone);
+  font-family: var(--latin-ui);
+  font-size: 12px;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+.skill-tag {
+  padding: 6px 8px;
+  background: var(--brand-tint);
+  color: var(--brand);
+}
+.category-card {
+  min-height: 116px;
+  padding: 16px;
+}
+.category-card b {
+  display: block;
+  color: var(--brand);
+  font-size: 17px;
+  font-weight: 500;
+}
+.category-card span {
+  display: block;
+  margin-top: 8px;
+  color: var(--olive);
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+.category-pill {
+  margin-top: 12px;
+  padding: 6px 8px;
+  background: var(--warm-sand);
+  color: var(--dark-warm);
+}
+
+.install-card {
+  padding: 24px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+}
+pre.code {
+  margin: 0;
+  padding: 18px 22px;
+  overflow-x: auto;
+  background: var(--ivory);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--near-black);
+  font-family: var(--mono);
+  font-size: 13.5px;
+  line-height: 1.55;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+pre.code .c { color: var(--stone); }
+pre.code .k { color: var(--brand); }
+
+.faq-pair { margin-bottom: 24px; }
+.faq-pair:last-child { margin-bottom: 0; }
+.faq dt {
+  margin: 0 0 6px;
+  color: var(--near-black);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+}
+.faq dd {
+  margin: 0;
+  color: var(--olive);
+  font-size: 14px;
+  line-height: 1.55;
+}
+.faq code {
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: var(--brand-tint);
+  color: var(--brand);
+  font-family: var(--mono);
+  font-size: 12px;
+}
+.faq-tail {
+  margin: 28px 0 0;
+  color: var(--stone);
+  font-size: 13px;
+}
+
+.foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 48px;
+  margin-top: 56px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border-soft);
+  color: var(--stone);
+  font-size: 13px;
+}
+.foot .mark {
+  display: grid;
+  grid-template-columns: 56px auto;
+  grid-template-rows: auto auto;
+  column-gap: 14px;
+  align-items: start;
+}
+.footer-rune {
+  grid-row: 1 / span 2;
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  color: var(--brand);
+  background: var(--ivory);
+  border: 1px solid var(--border);
+}
+.footer-rune svg { display: block; width: 100%; height: 100%; }
+.wm-name {
+  color: var(--near-black);
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.1;
+}
+.wm-line {
+  margin-top: 2px;
+  color: var(--olive);
+  font-size: 13px;
+}
+.colophon {
+  max-width: 480px;
+  text-align: right;
+}
+.links {
+  margin-bottom: 16px;
+  color: var(--dark-warm);
+  font-family: var(--latin-ui);
+  line-height: 1.55;
+}
+.links a { color: var(--dark-warm); }
+.links a:hover { color: var(--brand); }
+.ethos {
+  max-width: 360px;
+  margin: 0 0 0 auto;
+  color: var(--olive);
+  font-style: normal;
+  line-height: 1.55;
+}
+
+@media (max-width: 980px) {
+  .skill-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .category-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .mock-layout { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 880px) {
+  .page { padding: 64px 32px 80px; }
+  .hero { margin-bottom: 56px; padding-bottom: 32px; }
+  .hero h1 { font-size: 64px; }
+  .tagline { font-size: 18px; }
+  section { margin-bottom: 56px; }
+  .section-title { font-size: 26px; }
+  .gallery { grid-template-columns: 1fr; }
+  .gallery-caption,
+  .gallery-tabs { grid-column: 1; grid-row: auto; }
+  .gallery-tabs { justify-content: flex-start; gap: 6px; }
+  .gallery-tabs button { padding: 8px 10px; }
+  .features li {
+    grid-template-columns: 1fr;
+    row-gap: 8px;
+    padding: 22px 0;
+  }
+  .principles { grid-template-columns: 1fr; }
+  .principles li:nth-child(odd) {
+    border-right: none;
+    padding-right: 0;
+  }
+  .principles li:nth-child(even) { padding-left: 0; }
+  .category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .install-card { grid-template-columns: 1fr; }
+  .foot {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 32px;
+    margin-top: 48px;
+    padding-top: 32px;
+  }
+  .colophon { max-width: 100%; text-align: left; }
+  .ethos { margin-left: 0; }
+}
+
+@media (max-width: 620px) {
+  .page { padding: 48px 20px 64px; }
+  .eyebrow {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .hero h1 { font-size: 48px; }
+  .tagline { font-size: 17px; }
+  .hero-cta {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .btn-primary,
+  .btn-ghost { width: 100%; min-width: 0; }
+  .gallery-frame,
+  .mock-screen { min-height: 0; }
+  .mock-screen { padding: 18px; }
+  .mock-topbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .mock-grid,
+  .mock-submit,
+  .skill-grid,
+  .category-grid { grid-template-columns: 1fr; }
+  .mock-search {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .mock-command { white-space: normal; overflow-wrap: anywhere; }
+  .gallery-caption {
+    min-height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .section-title { font-size: 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .hero h1 { animation: none; opacity: 1; transform: none; filter: none; }
+  .gallery-frame::after { display: none; }
+  .gallery-panel,
+  .gallery-caption { transition: none; transform: none; }
+}
+</style>
+</head>
+<body>
+<main class="page">
+  <header class="hero">
+    <div class="eyebrow">
+      <span class="brand-inline">
+        <span class="rune-mark" aria-hidden="true">
+          <svg viewBox="0 0 64 64" role="img">
+            <rect x="2" y="2" width="60" height="60" rx="10" fill="currentColor"></rect>
+            <path d="M20 48 32 10l12 38M24 35h16M32 10v44" fill="none" stroke="#faf9f5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </span>
+        <span>SkillRune · <a class="version-link" href="#install">v0.1 registry concept</a></span>
+      </span>
+      <span class="hero-links">
+        <a href="#featured-skills">Skills</a>
+        <a href="#categories">Categories</a>
+        <a href="#faq">FAQ</a>
+      </span>
+    </div>
+
+    <h1>Reusable skills for AI agents.</h1>
+    <p class="tagline">Discover, inspect, and download agent skills that give models new capabilities.</p>
+
+    <div class="hero-tokens" aria-label="SkillRune facts">
+      <span><b>12</b> seed skills</span>
+      <span><b>11</b> categories</span>
+      <span><b>1 command</b> install pattern</span>
+      <span><b>0 accounts</b> for the MVP</span>
+    </div>
+
+    <div class="hero-cta">
+      <a class="btn-ghost" href="#submit-skill">Submit a Skill</a>
+      <a class="btn-primary" href="#featured-skills">Browse Skills</a>
+    </div>
+  </header>
+
+  <section id="registry-preview" aria-labelledby="registry-preview-title">
+    <div class="section-head">
+      <p class="section-num">00 · Registry Preview</p>
+      <h2 class="section-title" id="registry-preview-title">A spellbook for agent-native capabilities.</h2>
+      <p class="section-lede">SkillRune treats a skill as a package worth inspecting: instructions, files, compatibility, safety notes, and one clear install command.</p>
+      <p class="section-versus">Not a generic AI directory. Built for <b>developers</b>, <b>agent builders</b>, and <b>teams sharing reusable workflows</b>.</p>
+    </div>
+
+    <div class="gallery" data-gallery>
+      <div class="gallery-frame" aria-live="polite">
+        <figure class="gallery-panel is-active" data-title="Browse" data-line="Useful capabilities rise above the noise.">
+          <div class="mock-screen">
+            <div class="mock-topbar">
+              <span class="mock-brand">
+                <span class="rune-mark" aria-hidden="true">
+                  <svg viewBox="0 0 64 64">
+                    <rect x="2" y="2" width="60" height="60" rx="10" fill="#1B365D"></rect>
+                    <path d="M20 48 32 10l12 38M24 35h16M32 10v44" fill="none" stroke="#faf9f5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </span>
+                SkillRune
+              </span>
+              <span>Featured · Newest · Most downloaded · Highest rated</span>
+            </div>
+            <div class="mock-search">
+              <span>Search skills, tags, agents, or workflows</span>
+              <span class="mock-command">skillrune install repo-cartographer</span>
+            </div>
+            <div class="mock-layout">
+              <div class="mock-grid">
+                <article class="mock-card featured">
+                  <h3>Repo Cartographer</h3>
+                  <p>Maps a codebase into entrypoints, ownership areas, and change risks before an agent edits.</p>
+                  <div class="mock-meta"><span>Coding</span><span>4.9 rating</span><span>MIT</span></div>
+                </article>
+                <article class="mock-card">
+                  <h3>PDF Extractor Rune</h3>
+                  <p>Pulls structured entities, tables, and citations from long PDF files.</p>
+                  <div class="mock-meta"><span>File Operations</span><span>2.4k downloads</span></div>
+                </article>
+                <article class="mock-card">
+                  <h3>Testsmith</h3>
+                  <p>Turns observed behavior into focused unit, integration, and regression tests.</p>
+                  <div class="mock-meta"><span>Coding</span><span>3 agents</span></div>
+                </article>
+                <article class="mock-card">
+                  <h3>Browser Scout</h3>
+                  <p>Guides browser agents through login-safe research, capture, and verification flows.</p>
+                  <div class="mock-meta"><span>Browser Automation</span><span>Apache-2.0</span></div>
+                </article>
+              </div>
+              <aside class="mock-side" aria-label="Browse filters preview">
+                <div class="mock-panel">
+                  <h3>Categories</h3>
+                  <div class="mock-chip-row">
+                    <span class="mock-chip">Coding</span>
+                    <span class="mock-chip">Research</span>
+                    <span class="mock-chip">Design</span>
+                    <span class="mock-chip">DevOps</span>
+                    <span class="mock-chip">Security</span>
+                  </div>
+                </div>
+                <div class="mock-panel">
+                  <h3>Compatibility</h3>
+                  <p>Codex, Claude Desktop, browser agents, research agents, and local automation runners.</p>
+                  <div class="meter"><span></span></div>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </figure>
+
+        <figure class="gallery-panel" data-title="Inspect" data-line="Instructions, files, and safety notes stay visible.">
+          <div class="mock-screen">
+            <div class="mock-topbar">
+              <span class="mock-brand">Repo Cartographer</span>
+              <span>version 0.8.2 · MIT · by Mira K.</span>
+            </div>
+            <div class="mock-layout">
+              <div class="mock-file-list">
+                <article class="mock-file">
+                  <h3>README preview</h3>
+                  <p>Before editing a repository, build a short map of its modules, entrypoints, tests, and likely blast radius.</p>
+                  <code>skillrune install repo-cartographer</code>
+                </article>
+                <article class="mock-file">
+                  <h3>Files</h3>
+                  <p>SKILL.md, scripts/map_repo.ts, references/review-checklist.md, examples/report.md</p>
+                </article>
+                <article class="mock-file">
+                  <h3>Safety notes</h3>
+                  <p>Read-only by default. Requires explicit approval before destructive git or filesystem operations.</p>
+                </article>
+              </div>
+              <aside class="mock-side">
+                <div class="mock-panel">
+                  <h3>Supported agents</h3>
+                  <div class="mock-chip-row">
+                    <span class="mock-chip">Codex</span>
+                    <span class="mock-chip">Claude</span>
+                    <span class="mock-chip">CLI agents</span>
+                  </div>
+                </div>
+                <div class="mock-panel">
+                  <h3>Related skills</h3>
+                  <p>Testsmith, API Scribe, Release Note Forge</p>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </figure>
+
+        <figure class="gallery-panel" data-title="Submit" data-line="Shared workflows become inspectable packages.">
+          <div class="mock-screen">
+            <div class="mock-topbar">
+              <span class="mock-brand">Submit a Skill</span>
+              <span>reviewed catalog intake</span>
+            </div>
+            <div class="mock-submit">
+              <div class="mock-field"><span>Skill name</span><b>Dataset Distiller</b></div>
+              <div class="mock-field"><span>Category</span><b>Data Analysis</b></div>
+              <div class="mock-field"><span>Supported agents</span><b>Codex, research agents</b></div>
+              <div class="mock-field"><span>License</span><b>MIT</b></div>
+              <div class="mock-field wide"><span>Safety notes</span><b>Never uploads raw datasets. Redacts secrets before summarizing columns.</b></div>
+              <div class="mock-field wide"><span>Review status</span><b>Queued for maintainers, public listing after manual review.</b></div>
+            </div>
+          </div>
+        </figure>
+      </div>
+      <div class="gallery-caption">
+        <p class="title" data-gallery-title></p>
+        <p class="line" data-gallery-line></p>
+      </div>
+      <div class="gallery-tabs" aria-label="Choose a preview">
+        <button type="button" class="is-active" aria-pressed="true">Browse</button>
+        <button type="button" aria-pressed="false">Inspect</button>
+        <button type="button" aria-pressed="false">Submit</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="what-is-a-skill" aria-labelledby="what-title">
+    <div class="section-head">
+      <p class="section-num">01 · What Is A Skill?</p>
+      <h2 class="section-title" id="what-title">A reusable capability, packaged for an agent.</h2>
+    </div>
+    <ol class="features">
+      <li>
+        <p class="name">Instructions<small>The behavior contract.</small></p>
+        <p class="what">A skill tells an agent how to perform a specific task reliably: what to inspect, which tools to prefer, what to avoid, and how to verify the result.</p>
+      </li>
+      <li>
+        <p class="name">Files<small>The working kit.</small></p>
+        <p class="what">A skill can include scripts, references, examples, templates, and checklists, so the capability is not trapped inside a single prompt.</p>
+      </li>
+      <li>
+        <p class="name">Compatibility<small>The runtime edge.</small></p>
+        <p class="what">Each listing names the agents, models, tools, permissions, and local dependencies the skill expects before a developer installs it.</p>
+      </li>
+      <li>
+        <p class="name">Safety notes<small>The sharp edges.</small></p>
+        <p class="what">A serious registry makes risks visible: network access, file writes, secrets handling, browser sessions, destructive commands, and review status.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section id="why-skillrune" aria-labelledby="why-title">
+    <div class="section-head">
+      <p class="section-num">02 · Why SkillRune?</p>
+      <h2 class="section-title" id="why-title">Because useful agent behavior should be inspectable.</h2>
+      <p class="section-lede">Teams already pass around prompts, shell snippets, local scripts, and half-documented workflows. SkillRune turns that pile into a catalog with names, versions, authors, and install paths.</p>
+    </div>
+    <ol class="principles">
+      <li>
+        <span class="n">1</span>
+        <span class="body"><b>Developer-first listings</b><span>Every skill page leads with what it does, what it touches, and how to install or audit it.</span></span>
+      </li>
+      <li>
+        <span class="n">2</span>
+        <span class="body"><b>Curated before crowded</b><span>The MVP favors a small, high-signal registry over a marketplace full of duplicate wrappers.</span></span>
+      </li>
+      <li>
+        <span class="n">3</span>
+        <span class="body"><b>Agent-native metadata</b><span>Compatibility, permissions, dependencies, and supported runtimes are first-class fields.</span></span>
+      </li>
+      <li>
+        <span class="n">4</span>
+        <span class="body"><b>Install without ceremony</b><span>The command pattern stays simple enough to copy, script, and eventually turn into a real CLI.</span></span>
+      </li>
+    </ol>
+    <div class="metrics" aria-label="Catalog snapshot">
+      <div class="metric"><span class="metric-value">12</span><span class="metric-label">seed skills</span></div>
+      <div class="metric"><span class="metric-value">11</span><span class="metric-label">starting categories</span></div>
+      <div class="metric"><span class="metric-value">4</span><span class="metric-label">metadata groups</span></div>
+      <div class="metric"><span class="metric-value">1</span><span class="metric-label">copyable command shape</span></div>
+    </div>
+  </section>
+
+  <section id="featured-skills" aria-labelledby="featured-title">
+    <div class="section-head">
+      <p class="section-num">03 · Featured Skills</p>
+      <h2 class="section-title" id="featured-title">Twelve seed runes for the first catalog.</h2>
+      <p class="section-lede">The first SkillRune catalog should feel practical on day one: coding, research, files, browsers, analysis, writing, design, DevOps, security, productivity, and education.</p>
+    </div>
+    <div class="skill-grid">
+      <article class="skill-card">
+        <h3>PDF Extractor Rune</h3>
+        <p>Extracts structured facts, tables, citations, and action items from dense PDF documents.</p>
+        <div class="skill-tags"><span class="skill-tag">File Operations</span><span class="skill-tag">PDF</span></div>
+        <footer><div class="meta-line"><span>Codex, research agents</span><span>MIT</span></div></footer>
+      </article>
+      <article class="skill-card">
+        <h3>Repo Cartographer</h3>
+        <p>Maps a codebase before edits, including entrypoints, ownership areas, tests, and likely risks.</p>
+        <div class="skill-tags"><span class="skill-tag">Coding</span><span class="skill-tag">Review</span></div>
+        <footer><div class="meta-line"><span>Codex, CLI agents</span><span>MIT</span></div></footer>
+      </article>
+      <article class="skill-card">
+        <h3>Testsmith</h3>
+        <p>Generates and maintains focused unit, integration, and regression tests from observed behavior.</p>
+        <div class="skill-tags"><span class="skill-tag">Coding</span><span class="skill-tag">Testing</span></div>
+        <footer><div class="meta-line"><span>Codex, Claude</span><span>Apache-2.0</span></div></footer>
+      </article>
+      <article class="skill-card">
+        <h3>API Scribe</h3>
+        <p>Turns route handlers, schemas, and examples into readable API documentation.</p>
+        <div class="skill-tags"><span class="skill-tag">Writing</span><span class="skill-tag">Docs</span></div>
+        <footer><div class="meta-line"><span>Code agents</span><span>MIT</span></div></footer>
+      </article>
+      <article class="skill-card">
+        <h3>Browser Scout</h3>
+        <p>Guides browser agents through research, screenshots, form checks, and source capture.</p>
+        <div class="skill-tags"><span class="skill-tag">Browser Automation</span><span class="skill-tag">QA</span></div>
+        <footer><div class="meta-line"><span>Browser agents</span><span>MIT</span></div></footer>
+      </article>
+      <article class="skill-card">
+        <h3>Dataset Distiller</h3>
+        <p>Profiles CSV and spreadsheet data, flags missing values, and summarizes column meaning.</p>
+        <div class="skill-tags"><span class="skill-tag">Data Analysis</span><span class="skill-tag">CSV</span></div>
+        <footer><div class="meta-line"><span>Analysis agents</span><span>BSD-3</span></div></footer>
+      </article>
+      <article class="skill-card">
+        <h3>Email Triage Sigil</h3>
+        <p>Classifies mail into urgent, waiting, FYI, and task buckets without drafting replies by accident.</p>
+        <div class="skill-tags"><span class="skill-tag">Productivity</span><span class="skill-tag">Email</span></div>
+        <footer><div class="meta-line"><span>Automation agents</span><span>MIT</span></div></footer>
+      </article>
+      <article class="skill-card">
+        <h3>Release Note Forge</h3>
+        <p>Turns commits and merged pull requests into concise release notes with risk callouts.</p>
+        <div class="skill-tags"><span class="skill-tag">DevOps</span><span class="skill-tag">Git</span></div>
+        <footer><div class="meta-line"><span>GitHub agents</span><span>MIT</span></div></footer>
+      </article>
+      <article class="skill-card">
+        <h3>Threat Model Lens</h3>
+        <p>Reviews architecture notes for trust boundaries, secret exposure, and misuse cases.</p>
+        <div class="skill-tags"><span class="skill-tag">Security</span><span class="skill-tag">Review</span></div>
+        <footer><div class="meta-line"><span>Security agents</span><span>Apache-2.0</span></div></footer>
+      </article>
+      <article class="skill-card">
+        <h3>Design Critic</h3>
+        <p>Audits interface screenshots for spacing, hierarchy, copy clarity, and responsive defects.</p>
+        <div class="skill-tags"><span class="skill-tag">Design</span><span class="skill-tag">Frontend</span></div>
+        <footer><div class="meta-line"><span>Vision agents</span><span>MIT</span></div></footer>
+      </article>
+      <article class="skill-card">
+        <h3>DevOps Watchtower</h3>
+        <p>Reads deployment logs, environment diffs, and check failures to narrow production regressions.</p>
+        <div class="skill-tags"><span class="skill-tag">DevOps</span><span class="skill-tag">CI</span></div>
+        <footer><div class="meta-line"><span>Ops agents</span><span>MIT</span></div></footer>
+      </article>
+      <article class="skill-card">
+        <h3>Tutor Thread</h3>
+        <p>Turns a concept into short drills, worked examples, and review prompts for a learner.</p>
+        <div class="skill-tags"><span class="skill-tag">Education</span><span class="skill-tag">Practice</span></div>
+        <footer><div class="meta-line"><span>Teaching agents</span><span>CC-BY-4.0</span></div></footer>
+      </article>
+    </div>
+  </section>
+
+  <section id="categories" aria-labelledby="categories-title">
+    <div class="section-head">
+      <p class="section-num">04 · Categories</p>
+      <h2 class="section-title" id="categories-title">The first shelves in the registry.</h2>
+      <p class="section-lede">Categories help developers browse by task shape before SkillRune grows into full search and tag filtering.</p>
+    </div>
+    <div class="category-grid">
+      <article class="category-card"><b>Coding</b><span>Repo maps, refactors, tests, reviews.</span><span class="category-pill">3 seed skills</span></article>
+      <article class="category-card"><b>Research</b><span>Source capture, synthesis, citations.</span><span class="category-pill">1 seed skill</span></article>
+      <article class="category-card"><b>File Operations</b><span>PDFs, documents, archives, metadata.</span><span class="category-pill">1 seed skill</span></article>
+      <article class="category-card"><b>Browser Automation</b><span>Pages, forms, screenshots, QA.</span><span class="category-pill">1 seed skill</span></article>
+      <article class="category-card"><b>Data Analysis</b><span>Sheets, CSV, profiling, charts.</span><span class="category-pill">1 seed skill</span></article>
+      <article class="category-card"><b>Writing</b><span>Docs, release notes, summaries.</span><span class="category-pill">2 seed skills</span></article>
+      <article class="category-card"><b>Design</b><span>Interface review and visual QA.</span><span class="category-pill">1 seed skill</span></article>
+      <article class="category-card"><b>DevOps</b><span>Logs, CI, deploys, incident notes.</span><span class="category-pill">2 seed skills</span></article>
+    </div>
+  </section>
+
+  <section id="install" aria-labelledby="install-title">
+    <div class="section-head">
+      <p class="section-num">05 · Install UX</p>
+      <h2 class="section-title" id="install-title">One command shape, easy to copy.</h2>
+      <p class="section-lede">The MVP does not ship a real CLI yet. It establishes the command language the product can grow into.</p>
+    </div>
+    <div class="install-card">
+      <pre class="code"><code><span class="c"># planned install command</span>
+<span class="k">skillrune</span> install repo-cartographer</code></pre>
+      <button class="copy-button" type="button" data-copy="skillrune install repo-cartographer">Copy command</button>
+    </div>
+  </section>
+
+  <section id="submit-skill" aria-labelledby="submit-title">
+    <div class="section-head">
+      <p class="section-num">06 · Submit</p>
+      <h2 class="section-title" id="submit-title">A future intake path for reusable work.</h2>
+      <p class="section-lede">A submitted skill should include its name, short description, category, tags, supported agents, repository URL, documentation URL, license, author, contact, and safety notes.</p>
+    </div>
+    <ol class="features">
+      <li>
+        <p class="name">Package<small>Name it clearly.</small></p>
+        <p class="what">A good skill name should tell developers what capability they are equipping, not just which tool it uses.</p>
+      </li>
+      <li>
+        <p class="name">Document<small>Show the contract.</small></p>
+        <p class="what">The listing should preview the README, file tree, install command, compatibility, and required permissions before download.</p>
+      </li>
+      <li>
+        <p class="name">Review<small>Earn the catalog slot.</small></p>
+        <p class="what">For the MVP, submissions can be collected as structured intent and reviewed manually before appearing in the registry.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section id="faq" aria-labelledby="faq-title">
+    <div class="section-head">
+      <p class="section-num">07 · FAQ</p>
+      <h2 class="section-title" id="faq-title">Questions before the registry opens.</h2>
+    </div>
+    <dl class="faq">
+      <div class="faq-pair">
+        <dt>How is SkillRune different from a prompt library?</dt>
+        <dd>A prompt library stores text. SkillRune is designed around installable skill packages with files, instructions, compatibility, safety notes, and versioned metadata.</dd>
+      </div>
+      <div class="faq-pair">
+        <dt>Is this a marketplace?</dt>
+        <dd>Not in the MVP. The first version is a curated registry and demo catalog, without payments, accounts, or paid listings.</dd>
+      </div>
+      <div class="faq-pair">
+        <dt>Does the install command work today?</dt>
+        <dd>No. <code>skillrune install &lt;slug&gt;</code> is the intended command pattern for the product experience, not a shipped CLI in this static page.</dd>
+      </div>
+      <div class="faq-pair">
+        <dt>Which agents are supported?</dt>
+        <dd>The catalog model supports coding agents, research agents, browser agents, automation agents, and local CLI agents. Each skill should name its own support list.</dd>
+      </div>
+      <div class="faq-pair">
+        <dt>Can teams submit private skills?</dt>
+        <dd>Private registries are out of scope for this landing page. The submit flow described here is for a future public review queue.</dd>
+      </div>
+      <div class="faq-pair">
+        <dt>What makes a skill safe to install?</dt>
+        <dd>SkillRune should make permissions, file writes, network access, secrets handling, and destructive operations visible before the user downloads anything.</dd>
+      </div>
+    </dl>
+    <p class="faq-tail">The full `/skills` and `/submit` routes can ship when the static landing page grows into the registry app.</p>
+  </section>
+
+  <footer class="foot">
+    <div class="mark">
+      <span class="footer-rune" aria-hidden="true">
+        <svg viewBox="0 0 64 64">
+          <rect x="2" y="2" width="60" height="60" rx="10" fill="currentColor"></rect>
+          <path d="M20 48 32 10l12 38M24 35h16M32 10v44" fill="none" stroke="#faf9f5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </span>
+      <span class="wm-name">SkillRune</span>
+      <span class="wm-line">Equip agents with reusable capabilities.</span>
+    </div>
+    <div class="colophon">
+      <div class="links">
+        <a href="#registry-preview">Preview</a> &middot;
+        <a href="#featured-skills">Skills</a> &middot;
+        <a href="#install">Install</a> &middot;
+        <a href="#faq">FAQ</a>
+      </div>
+      <p class="ethos">A small catalog first. A sharper agent ecosystem next.</p>
+    </div>
+  </footer>
+</main>
+
+<script>
+(function(){
+  var gallery = document.querySelector('[data-gallery]');
+  if (!gallery) return;
+  var frame = gallery.querySelector('.gallery-frame');
+  var panels = Array.prototype.slice.call(gallery.querySelectorAll('.gallery-panel'));
+  var tabs = Array.prototype.slice.call(gallery.querySelectorAll('.gallery-tabs button'));
+  var title = gallery.querySelector('[data-gallery-title]');
+  var line = gallery.querySelector('[data-gallery-line]');
+  var index = 0;
+  var timer = null;
+  var transitionTimer = null;
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (panels.length === 0) return;
+  if (title) title.textContent = panels[0].dataset.title || '';
+  if (line) line.textContent = panels[0].dataset.line || '';
+
+  function activate(next) {
+    if (next === index) return;
+    var previous = index;
+    var direction = (next - previous + panels.length) % panels.length;
+    gallery.dataset.direction = direction > panels.length / 2 ? 'prev' : 'next';
+    if (transitionTimer) window.clearTimeout(transitionTimer);
+    panels.forEach(function(p) { p.classList.remove('was-active'); });
+    var outgoing = panels[previous];
+    if (outgoing) outgoing.classList.add('was-active');
+    gallery.classList.add('is-switching');
+    transitionTimer = window.setTimeout(function() {
+      gallery.classList.remove('is-switching');
+      if (outgoing) outgoing.classList.remove('was-active');
+      transitionTimer = null;
+    }, 920);
+    index = next;
+    panels.forEach(function(p, i) {
+      var active = i === index;
+      p.classList.toggle('is-active', active);
+      p.setAttribute('aria-hidden', active ? 'false' : 'true');
+    });
+    tabs.forEach(function(t, i) {
+      var active = i === index;
+      t.classList.toggle('is-active', active);
+      t.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+    if (title) title.textContent = panels[index].dataset.title || '';
+    if (line) line.textContent = panels[index].dataset.line || '';
+  }
+
+  function start() {
+    if (reduceMotion || timer || panels.length < 2) return;
+    timer = window.setInterval(function() {
+      activate((index + 1) % panels.length);
+    }, 4500);
+  }
+  function stop() {
+    if (!timer) return;
+    window.clearInterval(timer);
+    timer = null;
+  }
+
+  tabs.forEach(function(tab, i) {
+    tab.addEventListener('click', function() { stop(); activate(i); start(); });
+  });
+  if (frame) {
+    frame.addEventListener('click', function(e) {
+      var box = frame.getBoundingClientRect();
+      var next = e.clientX < box.left + box.width / 2
+        ? (index - 1 + panels.length) % panels.length
+        : (index + 1) % panels.length;
+      stop();
+      activate(next);
+      start();
+    });
+  }
+  gallery.addEventListener('mouseenter', stop);
+  gallery.addEventListener('mouseleave', start);
+  gallery.addEventListener('focusin', stop);
+  gallery.addEventListener('focusout', start);
+  start();
+})();
+
+(function(){
+  var buttons = Array.prototype.slice.call(document.querySelectorAll('[data-copy]'));
+  buttons.forEach(function(button) {
+    var original = button.textContent;
+    button.addEventListener('click', function() {
+      var text = button.getAttribute('data-copy');
+      function showCopied() {
+        button.textContent = 'Copied';
+        window.setTimeout(function() { button.textContent = original; }, 1400);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(showCopied, function() {
+          button.textContent = text;
+        });
+      } else {
+        button.textContent = text;
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
