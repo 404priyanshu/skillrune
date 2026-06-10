@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Folder, FolderOpen, FileText, ChevronRight, ChevronDown, Book, ShieldAlert } from "lucide-react";
+import { Folder, FolderOpen, FileText, ChevronRight, ChevronDown, Book } from "lucide-react";
 
 type FileItem = {
   path: string;

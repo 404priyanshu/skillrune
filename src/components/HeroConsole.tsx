@@ -26,8 +26,10 @@ export function HeroConsole() {
       // Pause at end of command
       timer = window.setTimeout(() => setIsDeleting(true), 2500);
     } else if (isDeleting && displayText === "") {
-      setIsDeleting(false);
-      setCurrentCmdIndex((prev) => (prev + 1) % commands.length);
+      timer = window.setTimeout(() => {
+        setIsDeleting(false);
+        setCurrentCmdIndex((prev) => (prev + 1) % commands.length);
+      }, 0);
     } else {
       timer = window.setTimeout(() => {
         setDisplayText((current) =>

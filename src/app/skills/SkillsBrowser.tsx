@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState, useEffect, useRef } from "react";
-import { Search, SlidersHorizontal, XCircle, Grid, List, ArrowRight, Download, Star } from "lucide-react";
+import { Search, SlidersHorizontal, XCircle, Grid, List, ArrowRight, Star } from "lucide-react";
 import { SkillCard } from "@/components/SkillCard";
 import { Sparkline } from "@/components/Sparkline";
 import { allTags, categories, skills, formatDownloads } from "@/lib/skills";

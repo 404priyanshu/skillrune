@@ -1,14 +1,12 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowRight,
   BookOpen,
   Download,
-  FileJson,
   Search,
   ShieldCheck,
   Sparkles,
-  Award,
-  BookMarked,
   Scroll,
 } from "lucide-react";
 import { RuneMark } from "@/components/RuneMark";
@@ -17,11 +15,6 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SkillsBrowser } from "@/app/skills/SkillsBrowser";
 import { HeroConsole } from "@/components/HeroConsole";
 import { categories, skills } from "@/lib/skills";
-
-const newestSkills = [...skills]
-  .sort((a, b) => Date.parse(b.lastUpdated) - Date.parse(a.lastUpdated))
-  .slice(0, 5);
-const popularSkills = [...skills].sort((a, b) => b.downloads - a.downloads).slice(0, 5);
 
 const quickStats = [
   { label: "Equippable Runes", value: skills.length },
@@ -85,7 +78,7 @@ export default function Home() {
               <div className="space-y-6">
                 <div className="inline-flex items-center gap-2.5 rounded-full border border-[var(--border)] bg-[var(--ivory)] px-3.5 py-1.5 font-ui text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--stone)] shadow-sm">
                   <RuneMark className="h-5 w-5" />
-                  <span>The Scholar's Agent Registry · Beta v0.1.0</span>
+                  <span>The Scholar&apos;s Agent Registry · Beta v0.1.0</span>
                 </div>
                 
                 {/* Large ASCII Art Logo */}
@@ -164,20 +157,24 @@ export default function Home() {
               <div className="animate-carousel flex items-center gap-10">
                 {/* Set 1 */}
                 {agents.map((agent, i) => (
-                  <img
+                  <Image
                     key={`agent-a-${i}`}
                     src={`/agents/${agent.file}`}
                     alt={agent.name}
+                    width={96}
+                    height={56}
                     title={agent.name}
                     className="h-10 sm:h-12 lg:h-14 w-auto object-contain flex-shrink-0 filter grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100 cursor-pointer"
                   />
                 ))}
                 {/* Set 2 (for seamless loop) */}
                 {agents.map((agent, i) => (
-                  <img
+                  <Image
                     key={`agent-b-${i}`}
                     src={`/agents/${agent.file}`}
                     alt={agent.name}
+                    width={96}
+                    height={56}
                     title={agent.name}
                     className="h-10 sm:h-12 lg:h-14 w-auto object-contain flex-shrink-0 filter grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100 cursor-pointer"
                   />
