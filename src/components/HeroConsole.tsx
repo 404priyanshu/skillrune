@@ -55,8 +55,8 @@ export function HeroConsole() {
   };
 
   return (
-    <div className="w-full max-w-[460px] rounded-xl border border-[var(--brand)] bg-[var(--dark-panel)] p-4 shadow-lg">
-      <div className="flex items-center justify-between border-b border-[var(--olive)] pb-2 mb-3">
+    <div className="w-full max-w-full sm:max-w-[460px] h-[106px] rounded-xl border border-[var(--brand)] bg-[var(--dark-panel)] p-4 shadow-lg flex flex-col justify-between shrink-0 overflow-hidden">
+      <div className="flex items-center justify-between border-b border-[var(--olive)] pb-2 mb-2">
         <div className="flex gap-1.5">
           <span className="h-3 w-3 rounded-full bg-red-500/80"></span>
           <span className="h-3 w-3 rounded-full bg-yellow-500/80"></span>
@@ -66,16 +66,16 @@ export function HeroConsole() {
           Runic Console v0.1
         </span>
       </div>
-      <div className="flex items-center justify-between gap-4 font-mono text-sm">
-        <div className="flex items-center min-w-0">
+      <div className="flex items-center justify-between gap-4 font-mono text-sm h-7 min-w-0 w-full">
+        <div className="flex items-center min-w-0 flex-1">
           <span className="text-[var(--stone)] mr-2 select-none">$</span>
-          <span className="text-[#d8d5c8] truncate terminal-cursor">
+          <span className="text-[#d8d5c8] truncate terminal-cursor block whitespace-nowrap overflow-hidden h-5 select-all min-w-0 flex-1">
             {displayText}
           </span>
         </div>
         <button
           onClick={copyToClipboard}
-          className="p-2 rounded-lg bg-[var(--olive)]/20 hover:bg-[var(--olive)]/40 text-[var(--line)] hover:text-[var(--ivory)] transition-all cursor-pointer shrink-0"
+          className="p-1.5 rounded-lg bg-[var(--olive)]/20 hover:bg-[var(--olive)]/40 text-[var(--line)] hover:text-[var(--ivory)] transition-all cursor-pointer shrink-0"
           title="Copy command to clipboard"
         >
           {copied ? (

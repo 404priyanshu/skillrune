@@ -215,7 +215,64 @@ export function SkillsBrowser({
         <>
           {viewLayout === "leaderboard" ? (
             <div className="overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--ivory)] shadow-sm">
-              <div className="overflow-x-auto">
+              {/* Mobile View: Stack of Ledger Cards */}
+              <div className="block md:hidden divide-y divide-[var(--border-soft)]">
+                {(compact ? filtered.slice(0, 7) : filtered).map((skill, index) => (
+                  <div
+                    key={skill.slug}
+                    className="p-4 flex flex-col gap-3 hover:bg-[var(--brand-tint)]/25 transition-colors relative"
+                  >
+                    {/* Top Row: Rank, Name, Version */}
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-start gap-2.5 min-w-0">
+                        <span className="font-mono text-sm text-[var(--stone)] font-bold bg-[var(--parchment)] w-6 h-6 rounded-full flex items-center justify-center border border-[var(--border-soft)] shrink-0 select-none">
+                          {index + 1}
+                        </span>
+                        <div className="min-w-0">
+                          <Link href={`/skills/${skill.slug}`} className="group/title block">
+                            <span className="font-serif text-base font-bold text-[var(--near-black)] group-hover/title:text-[var(--brand)] transition-colors leading-snug">
+                              {skill.name}
+                            </span>
+                            <span className="ml-2 rounded bg-[var(--brand-tint)] px-1.5 py-0.5 font-mono text-[9px] font-semibold text-[var(--brand)] border border-[var(--border-soft)] uppercase tracking-wide inline-block align-middle">
+                              {skill.version}
+                            </span>
+                          </Link>
+                          <span className="block font-ui text-[10px] font-bold text-[var(--brand-light)] uppercase tracking-wider mt-0.5">
+                            {skill.category}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Description */}
+                    <p className="font-ui text-xs text-[var(--olive)] leading-relaxed line-clamp-2">
+                      {skill.shortDescription}
+                    </p>
+
+                    {/* Stats & CTA Row */}
+                    <div className="flex items-center justify-between border-t border-[var(--border-soft)]/60 pt-3 mt-1">
+                      <div className="flex items-center gap-4 font-mono text-xs text-[var(--stone)]">
+                        <span className="flex items-center gap-1">
+                          <span className="text-[var(--brand-light)]">▼</span> {formatDownloads(skill.downloads)} equips
+                        </span>
+                        <span className="flex items-center gap-1 font-bold text-[var(--near-black)]">
+                          <Star className="h-3 w-3 fill-[var(--brand)] text-[var(--brand)] shrink-0" />
+                          {skill.rating.toFixed(1)}
+                        </span>
+                      </div>
+                      <Link
+                        href={`/skills/${skill.slug}`}
+                        className="inline-flex items-center gap-1 font-ui text-xs font-bold text-[var(--brand)] hover:text-[var(--brand-light)] transition-all bg-[var(--brand-tint)] hover:bg-[var(--brand)] hover:text-[var(--ivory)] px-3 py-1.5 rounded-full border border-[var(--brand)]"
+                      >
+                        Equip <ArrowRight className="h-3 w-3" />
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Desktop View: Regular Table */}
+              <div className="hidden md:block overflow-x-auto">
                 <table className="w-full border-collapse text-left">
                   <thead>
                     <tr className="border-b border-[var(--border)] bg-[var(--parchment)]/50 font-ui text-xs font-semibold uppercase tracking-[0.1em] text-[var(--stone)]">

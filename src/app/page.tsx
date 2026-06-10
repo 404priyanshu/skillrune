@@ -72,10 +72,10 @@ export default function Home() {
       <main className="bg-[var(--parchment)]">
         {/* Hero Section */}
         <section className="border-b border-[var(--border-soft)] relative overflow-hidden bg-radial from-[var(--ivory)] to-[var(--parchment)] py-12 lg:py-16">
-          <div className="mx-auto max-w-6xl px-5 sm:px-8">
-            <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+          <div className="mx-auto max-w-6xl px-5 sm:px-8 w-full min-w-0">
+            <div className="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-center w-full min-w-0">
               {/* Left Column: Branding and Intro */}
-              <div className="space-y-6">
+              <div className="space-y-6 w-full min-w-0">
                 <div className="inline-flex items-center gap-2.5 rounded-full border border-[var(--border)] bg-[var(--ivory)] px-3.5 py-1.5 font-ui text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--stone)] shadow-sm">
                   <RuneMark className="h-5 w-5" />
                   <span>The Scholar&apos;s Agent Registry · Beta v0.1.0</span>
@@ -119,9 +119,9 @@ export default function Home() {
               </div>
 
               {/* Right Column: Console and Quick Stats */}
-              <div className="flex flex-col items-center lg:items-end gap-8">
+              <div className="flex flex-col items-center lg:items-end gap-8 w-full min-w-0">
                 {/* Typing Console */}
-                <div className="w-full flex justify-center lg:justify-end">
+                <div className="w-full flex justify-center lg:justify-end min-w-0">
                   <HeroConsole />
                 </div>
 
@@ -149,7 +149,24 @@ export default function Home() {
             <h2 className="text-[10px] font-ui font-bold tracking-[0.15em] text-[var(--stone)] uppercase text-center mb-4">
               Compatible with major agent frameworks
             </h2>
-            <div className="relative w-full overflow-hidden flex">
+            
+            {/* Mobile View: Grid/wrapping layout */}
+            <div className="flex flex-wrap justify-center items-center gap-x-5 gap-y-4 py-2 sm:hidden">
+              {agents.map((agent, i) => (
+                <div key={`agent-mobile-${i}`} className="h-9 w-[70px] relative flex items-center justify-center">
+                  <Image
+                    src={`/agents/${agent.file}`}
+                    alt={agent.name}
+                    fill
+                    title={agent.name}
+                    className="object-contain filter grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100 cursor-pointer"
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop View: Scrolling Marquee */}
+            <div className="hidden sm:flex relative w-full overflow-hidden">
               {/* Fade overlays */}
               <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[var(--parchment)] to-transparent z-10 pointer-events-none"></div>
               <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[var(--parchment)] to-transparent z-10 pointer-events-none"></div>
